@@ -1,0 +1,21 @@
+{ 
+"1": {
+    "type": "text",
+	"line_1": "I am the scarecrow!",
+	"portrait": "scare_crow.png"
+	},
+"2": {
+    "type": "text",
+	"line_1": "I am also scarecrow"
+	},
+"3": {
+    "type": "text",
+	"line_1": "This looks like a sack.",
+	"line_2": "Made of burlap?",
+	"next": 4
+	},
+"4": {
+    "type": "text",
+	"line_2": "Yep, a burlap sack"
+	}
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="42" height="24" tilewidth="32" tileheight="32" nextobjectid="8">
+ <tileset firstgid="1" name="rp_maker_vx" tilewidth="32" tileheight="32">
+  <image source="python/bobgame/assets/rpg_maker_vx_rtp_tileset_by_telles0808.png" width="1024" height="2016"/>
+ </tileset>
+ <layer name="layer_0" width="42" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3DQQ0AAAwDobNX/4ZmYw9IWDVVVVX19QPvc4OcwA8AAA==
+  </data>
+ </layer>
+ <layer name="layer_1" width="42" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2USwqAMAwFI5ZcRPEiev9LCJ7D7qyln4A1yeLNsg10eElKBLQ5J2uDBw5j6/5iE74vrdPGOj8pXvNrMTNR4PeZdd6lHV+i45p5auct+Xv26Hhwv04T637WyL287k/JqzcL6f01j/X5SupmMRutbGo+3mbDmw8AAAA5NysFUjnADwAA
+  </data>
+ </layer>
+ <layer name="passmap" width="42" height="24">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3SMQoAMAhDUa/i/S/ZvbU0FMEM/00OgiEYAfjL5j3U6K+H678q91Lcw8m1tyrXK2teZgfTeX66mc68c8sDANAtx1srXMAPAAA=
+  </data>
+ </layer>
+ <objectgroup name="object_0">
+  <object id="1" gid="1089" x="465" y="208" width="32" height="32">
+   <properties>
+    <property name="action" value="2"/>
+   </properties>
+  </object>
+  <object id="2" gid="1089" x="324" y="335" width="32" height="32">
+   <properties>
+    <property name="action" value="1"/>
+   </properties>
+  </object>
+  <object id="6" gid="1206" x="738" y="326" width="32" height="32">
+   <properties>
+    <property name="action" value="3"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer name="layer_2" width="42" height="24">
+  <properties>
+   <property name="upper" value="True"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3RMQoAIAxD0YLSi+j9z6iOouCiEOx/Y8kQUjNE5vluDnvs905ys+zzTXHv0jtWP+ewUvznoNorErUfqPUBAPynAdu8omPADwAA
+  </data>
+ </layer>
+</map>
