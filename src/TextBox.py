@@ -2,7 +2,7 @@ import pygame
 
 
 class TextBox(pygame.sprite.Sprite):
-    def __init__(self, box_bounds, text, color=None, picture=None):
+    def __init__(self, box_bounds, text=None, color=None, picture=None):
         pygame.sprite.Sprite.__init__(self)
 
         self.font_size = 24
@@ -17,7 +17,8 @@ class TextBox(pygame.sprite.Sprite):
                                      self.box.width - self.border * 2,
                                      self.box.height - self.border * 2)
         self.text = text
-        self.portrait = picture
+        self.portrait_url = picture
+        self.portrait = None
         self.color = color
 
         self.choice = False
@@ -29,8 +30,11 @@ class TextBox(pygame.sprite.Sprite):
 
     def draw(self, screen):
         if self.visible:
-            if self.portrait:
+            if self.portrait_url:
                 portrait_offset = 150 + self.space
+                if not self.portrait:
+                    self.portrait = pygame.image.load('..\\assets\\portraits\\{0}'.
+                                                      format(self.portrait_url)).convert_alpha()
             else:
                 portrait_offset = 0
 
@@ -39,9 +43,18 @@ class TextBox(pygame.sprite.Sprite):
             if self.portrait:
                 screen.blit(self.portrait, (self.inner_box.left + self.space,
                                             self.inner_box.top + (self.inner_box.height - 150) / 2))
-            screen.blit(self.font.render(self.text, True, self.white),
+            # line 1
+            screen.blit(self.font.render(self.text[0], True, self.white),
                         (portrait_offset + self.inner_box.left + self.space,
                          self.inner_box.top + (self.inner_box.height - 150) / 2))
+            # line 2
+            screen.blit(self.font.render(self.text[1], True, self.white),
+                        (portrait_offset + self.inner_box.left + self.space,
+                         self.inner_box.top + (self.inner_box.height - 150) / 2 + self.font_size * 1.2))
+            # line 3
+            screen.blit(self.font.render(self.text[2], True, self.white),
+                        (portrait_offset + self.inner_box.left + self.space,
+                         self.inner_box.top + (self.inner_box.height - 150) / 2 + self.font_size * 2.4))
             if self.choice:
                 screen.fill(self.white, self.choice_box)
                 screen.fill(self.color, self.choice_inner_box)
@@ -56,7 +69,7 @@ class TextBox(pygame.sprite.Sprite):
         if text:
             self.text = text
         if portrait:
-            self.portrait = portrait
+            self.portrait_url = portrait
         if color:
             self.color = color
         if choice:
@@ -66,5 +79,6 @@ class TextBox(pygame.sprite.Sprite):
 
     def close(self):
         self.visible = False
+        self.portrait_url = None
         self.portrait = None
         self.text = None

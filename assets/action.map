@@ -12,9 +12,14 @@
     "type": "text",
 	"line_1": "This looks like a sack.",
 	"line_2": "Made of burlap?",
-	"next": 4
+	"next": "4"
 	},
 "4": {
+    "type": "wait",
+	"time": 2,
+	"next": "5"
+	},
+"5": {
     "type": "text",
 	"line_2": "Yep, a burlap sack"
 	}

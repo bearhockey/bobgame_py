@@ -23,8 +23,12 @@ class Map(object):
         self.map_tileset = pygame.image.load('..\\assets\\{0}'.format(self.tileset_data['image']))
         self.map_size = screen_size
 
+        self.trans_color = (255, 0, 255)
+
         self.lower_map = pygame.Surface(self.map_size)
         self.upper_map = pygame.Surface(self.map_size)
+        self.upper_map.fill(self.trans_color)
+        self.upper_map.set_colorkey(self.trans_color)
         self.build_map()
 
     def draw(self, screen, passmap=False):
