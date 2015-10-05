@@ -1,11 +1,9 @@
-__author__ = 'max_hart'
-
 import pygame
 # from SpriteSheet import SpriteSheet
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, sprite_sheet, sprite_rect):
+    def __init__(self, sprite_sheet, sprite_rect, horizontal_cut, veritcal_cut):
         pygame.sprite.Sprite.__init__(self)
 
         self.direction_dir = {'down': 0,
@@ -13,11 +11,15 @@ class Player(pygame.sprite.Sprite):
                               'right': 2,
                               'up': 3
                               }
+        self.horizontal_cut = horizontal_cut
+        self.vertical_cut = veritcal_cut
 
         self.sprite_sheet = sprite_sheet
         self.sprite_rect = sprite_rect
-        self.pass_rect = pygame.Rect(sprite_rect.left + 2, sprite_rect.top + (sprite_rect.height / 2),
-                                     sprite_rect.width - 4, sprite_rect.top + (sprite_rect.height / 2))
+        self.pass_rect = pygame.Rect(sprite_rect.left + self.horizontal_cut,
+                                     sprite_rect.top + (sprite_rect.height / 2) + self.vertical_cut,
+                                     sprite_rect.width - self.horizontal_cut * 2,
+                                     sprite_rect.height / 2 - self.vertical_cut * 2)
         self.speed = 4
         self.direction = self.direction_dir['down']
         self.moving = False

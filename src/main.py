@@ -18,7 +18,7 @@ black = (0, 0, 0)
 # needs to be set before any images are loaded
 screen = pygame.display.set_mode(size)
 
-peter = Player(SpriteSheet('..\\assets\\pete3a.png', 32, 48), pygame.Rect(10, 10, 32, 48))
+peter = Player(SpriteSheet('..\\assets\\pete3a.png', 32, 48), pygame.Rect(10, 10, 32, 48), 8, 4)
 controller = Controller(peter)
 
 tbox = TextBox(pygame.Rect(4, 500, width - 8, 200), 'Howdy', (20, 30, 200))
