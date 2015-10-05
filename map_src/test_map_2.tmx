@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="42" height="24" tilewidth="32" tileheight="32" nextobjectid="8">
- <tileset firstgid="1" name="rp_maker_vx" tilewidth="32" tileheight="32">
-  <image source="python/bobgame/assets/rpg_maker_vx_rtp_tileset_by_telles0808.png" width="1024" height="2016"/>
+ <tileset firstgid="1" name="rp_maker_vx" tilewidth="32" tileheight="32" tilecount="2016">
+  <image source="../assets/rpg_maker_vx_rtp_tileset_by_telles0808.png" width="1024" height="2016"/>
  </tileset>
  <layer name="layer_0" width="42" height="24">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAC+3DQQ0AAAwDobNX/4ZmYw9IWDVVVVX19QPvc4OcwA8AAA==
   </data>
  </layer>
- <layer name="layer_1" width="42" height="24">
+ <layer name="layer_1" width="42" height="24" opacity="0.69">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+2USwqAMAwFI5ZcRPEiev9LCJ7D7qyln4A1yeLNsg10eElKBLQ5J2uDBw5j6/5iE74vrdPGOj8pXvNrMTNR4PeZdd6lHV+i45p5auct+Xv26Hhwv04T637WyL287k/JqzcL6f01j/X5SupmMRutbGo+3mbDmw8AAAA5NysFUjnADwAA
+   H4sIAAAAAAAAC+2UWwrCQAxFUzttF2JxI7oSwY0IXZPuxP6q4DrMjxjDPOJ0HoI5PwOdFA43yQAopbk3tQ3e9Ob7un2fx8XHRuhJ644Bz4P5PHMizZny8prYmdNXmjNlcvzj+p6aFvtsWK953qHMUmdq2/E1Oo7Mk+cdymxpppK3Z4uOuwo77iNmf0rAvWL2pwQ2r9As0PtHm9ZnKdStxmz4snH58B6cBoDzYK+9dgC3Lt5PgnRWL+g4OzwbfCdWP/ZWKIqi/ANPg5zrssAPAAA=
   </data>
  </layer>
  <layer name="passmap" width="42" height="24">
@@ -19,7 +19,7 @@
   </data>
  </layer>
  <objectgroup name="object_0">
-  <object id="1" gid="1089" x="465" y="208" width="32" height="32">
+  <object id="1" gid="1089" x="479" y="157" width="32" height="32" visible="0">
    <properties>
     <property name="action" value="2"/>
    </properties>
@@ -29,7 +29,7 @@
     <property name="action" value="1"/>
    </properties>
   </object>
-  <object id="6" gid="1206" x="738" y="326" width="32" height="32">
+  <object id="6" gid="1206" x="766" y="276" width="32" height="32">
    <properties>
     <property name="action" value="3"/>
    </properties>
@@ -40,7 +40,7 @@
    <property name="upper" value="True"/>
   </properties>
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC+3RMQoAIAxD0YLSi+j9z6iOouCiEOx/Y8kQUjNE5vluDnvs905ys+zzTXHv0jtWP+ewUvznoNorErUfqPUBAPynAdu8omPADwAA
+   H4sIAAAAAAAAC2NgGAUjGbCxkK4uiY02bqE3SGVBpWkJiA1nZIDLXfRw71ACzMD0yIKWJtHDm1CY0SNMlYFuVBkmeYfegJz8Qw8wWN01ksBgiwNi3bOdnYFhBzt2uYesDAyPWKnnplEwCkbBKBgFwwsAACWfWZXADwAA
   </data>
  </layer>
 </map>

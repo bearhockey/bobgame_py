@@ -7,6 +7,8 @@ class Controller(object):
         print 'Keyboard controller initialized or whatever'
         self.delay_time = 15
 
+        self.current_action = None
+
         # da keys tho
         self.keys = {'down': pygame.K_DOWN,
                      'up': pygame.K_UP,
@@ -20,10 +22,23 @@ class Controller(object):
             press = pygame.key.get_pressed()
 
             # ignore everything if text box is on screen
-            if tbox.visible:
-                if press[self.keys['action']] != 0:
-                    tbox.close()
-                    return self.delay_time
+            if self.current_action:
+                action_type = action_map.get_action_type(self.current_action)
+                if action_type == 'text':
+                    if press[self.keys['action']] != 0:
+                        tbox.close()
+                        if 'next' in action_map.get_action(self.current_action):
+                            self.current_action = action_map.get_next_action(self.current_action)
+                            action_map.trigger_action(self.current_action)
+                        else:
+                            self.current_action = None
+                        return self.delay_time
+                elif action_type == 'wait':
+                    if 'next' in action_map.get_action(self.current_action):
+                        self.current_action = action_map.get_next_action(self.current_action)
+                        action_map.trigger_action(self.current_action)
+                    else:
+                        self.current_action = None
             else:
                 # player directionals
                 s = self.player.speed
@@ -86,5 +101,6 @@ class Controller(object):
                 if press[self.keys['action']] != 0:
                     for o in map_object.object_list:
                         if self.player.get_action_rect().colliderect(o.position):
-                            action_map.trigger_action(o.action())
+                            self.current_action = o.action()
+                            action_map.trigger_action(self.current_action)
                             return self.delay_time

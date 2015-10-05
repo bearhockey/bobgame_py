@@ -21,9 +21,6 @@ class MapObject(object):
 
         self.position = pygame.Rect(self.data['x'], self.data['y'], self.data['width'], self.data['height'])
 
-    def set_portrait(self, portrait_file):
-        self.portrait = pygame.image.load('..\\assets\\portraits\\{0}'.format(portrait_file)).convert_alpha()
-
     def draw(self, screen, tileset_image):
         screen.blit(tileset_image, self.position, area=self.tileset_rect)
 

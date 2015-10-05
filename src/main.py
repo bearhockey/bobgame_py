@@ -38,7 +38,7 @@ while 1:
     screen.fill(black)
     test_map.draw(screen, passmap=False)
     peter.draw(screen)
-    # test_map.draw_upper(screen)
+    test_map.draw_upper(screen)
     if tbox:
         tbox.draw(screen)
     pygame.display.flip()
