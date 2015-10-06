@@ -6,6 +6,7 @@ class Controller(object):
         self.player = player_object
         print 'Keyboard controller initialized or whatever'
         self.delay_time = 15
+        self.wait_time = 0
 
         self.current_action = None
 
@@ -18,7 +19,9 @@ class Controller(object):
                      }
 
     def poll(self, map_object, tbox, delay_timer, action_map):
-        if pygame.key.get_focused() and delay_timer < 1:
+        if self.wait_time > 0:
+            self.wait_time -= 1
+        elif pygame.key.get_focused() and delay_timer < 1:
             press = pygame.key.get_pressed()
 
             # ignore everything if text box is on screen
@@ -27,18 +30,10 @@ class Controller(object):
                 if action_type == 'text':
                     if press[self.keys['action']] != 0:
                         tbox.close()
-                        if 'next' in action_map.get_action(self.current_action):
-                            self.current_action = action_map.get_next_action(self.current_action)
-                            action_map.trigger_action(self.current_action)
-                        else:
-                            self.current_action = None
+                        self.next_action(action_map)
                         return self.delay_time
                 elif action_type == 'wait':
-                    if 'next' in action_map.get_action(self.current_action):
-                        self.current_action = action_map.get_next_action(self.current_action)
-                        action_map.trigger_action(self.current_action)
-                    else:
-                        self.current_action = None
+                    self.next_action(action_map)
             else:
                 # player directionals
                 s = self.player.speed
@@ -104,3 +99,11 @@ class Controller(object):
                             self.current_action = o.action()
                             action_map.trigger_action(self.current_action)
                             return self.delay_time
+
+    def next_action(self, action_map):
+        if 'next' in action_map.get_action(self.current_action):
+            self.current_action = action_map.get_next_action(self.current_action)
+            self.wait_time = action_map.trigger_action(self.current_action)
+        else:
+            self.current_action = None
+        return self.delay_time

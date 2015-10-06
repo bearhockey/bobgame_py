@@ -1,5 +1,4 @@
 import json
-from time import sleep
 
 
 class ActionMap(object):
@@ -8,7 +7,7 @@ class ActionMap(object):
         with open(action_file) as data_file:
             self.action_map = json.load(data_file)
             data_file.close()
-        self.tbox = text_box
+        self.text_box = text_box
 
     def get_action(self, action_id):
         return self.action_map[action_id]
@@ -24,8 +23,9 @@ class ActionMap(object):
             action_type = self.get_action_type(action_id)
             if action_type == 'text':
                 self.action_text_box(self.action_map[action_id])
+                return None
             elif action_type == 'wait':
-                self.action_wait(self.action_map[action_id])
+                return self.action_wait(self.action_map[action_id])
 
     def action_text_box(self, text_box_data):
         if 'line_1' in text_box_data:
@@ -50,10 +50,10 @@ class ActionMap(object):
         else:
             portrait = None
 
-        self.tbox.open(text=text_lines, portrait=portrait)
+        self.text_box.open(text=text_lines, portrait=portrait)
         print 'This would be a text box if I had one'
 
     def action_wait(self, action_data):
         if 'time' in action_data:
-            print 'Waiting for things'
-            sleep(action_data['time'])
+            print 'Waiting for things: {0}'.format(action_data['time'] * 60)
+            return action_data['time'] * 60

@@ -21,9 +21,14 @@ class Map(object):
                              't_height': self.map_data['tilesets'][0]['tileheight']
                              }
         self.map_tileset = pygame.image.load('..\\assets\\{0}'.format(self.tileset_data['image']))
-        self.map_size = screen_size
+        # self.map_size = screen_size
+        self.map_size = (self.map_data['width'] * self.map_data['tilewidth'],
+                         self.map_data['height'] * self.map_data['tileheight'])
+        print 'Map size {0}'.format(self.map_size)
 
         self.trans_color = (255, 0, 255)
+
+        self.starting_location = None
 
         self.lower_map = pygame.Surface(self.map_size)
         self.upper_map = pygame.Surface(self.map_size)
@@ -31,16 +36,17 @@ class Map(object):
         self.upper_map.set_colorkey(self.trans_color)
         self.build_map()
 
-    def draw(self, screen, passmap=False):
-        screen.blit(self.lower_map, (0, 0))
+    def draw(self, screen, cam_offset, passmap=False):
+        # screen.blit(self.lower_map, (0, 0))
+        screen.blit(self.lower_map, cam_offset)
         if passmap:
             for block in self.passmap:
                 pygame.draw.rect(screen, (255, 255, 255), block)
         for o in self.object_list:
             o.draw(screen, self.map_tileset)
 
-    def draw_upper(self, screen):
-        screen.blit(self.upper_map, (0, 0))
+    def draw_upper(self, screen, cam_offset):
+        screen.blit(self.upper_map, cam_offset)
 
     def build_map(self):
         for layer in self.map_data['layers']:
@@ -76,4 +82,8 @@ class Map(object):
                         pos += 1
                 elif layer['type'] == 'objectgroup':
                     for o in layer['objects']:
-                        self.object_list.append(MapObject(o, self.tileset_data, self.text_box))
+                        if 'start' in o['properties']:
+                            self.starting_location = (o['x'], o['y'])
+                            print 'Starting location is {0}'.format(self.starting_location)
+                        else:
+                            self.object_list.append(MapObject(o, self.tileset_data, self.text_box))

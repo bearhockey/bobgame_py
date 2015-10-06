@@ -16,13 +16,18 @@ class Player(pygame.sprite.Sprite):
 
         self.sprite_sheet = sprite_sheet
         self.sprite_rect = sprite_rect
-        self.pass_rect = pygame.Rect(sprite_rect.left + self.horizontal_cut,
-                                     sprite_rect.top + (sprite_rect.height / 2) + self.vertical_cut,
-                                     sprite_rect.width - self.horizontal_cut * 2,
-                                     sprite_rect.height / 2 - self.vertical_cut * 2)
+        self.pass_rect = None
+        self.translate_pass_rect()
+
         self.speed = 4
         self.direction = self.direction_dir['down']
         self.moving = False
+
+    def translate_pass_rect(self):
+        self.pass_rect = pygame.Rect(self.sprite_rect.left + self.horizontal_cut,
+                                     self.sprite_rect.top + (self.sprite_rect.height / 2) + self.vertical_cut,
+                                     self.sprite_rect.width - self.horizontal_cut * 2,
+                                     self.sprite_rect.height / 2 - self.vertical_cut * 2)
 
     def get_action_rect(self):
         if self.direction == self.direction_dir['up']:
@@ -51,6 +56,11 @@ class Player(pygame.sprite.Sprite):
     def move(self, x, y):
         self.sprite_rect.move_ip(x, y)
         self.pass_rect.move_ip(x, y)
+
+    def teleport(self, x, y):
+        self.sprite_rect.left = x
+        self.sprite_rect.top = y
+        self.translate_pass_rect()
 
     def draw(self, screen):
         if self.moving:
