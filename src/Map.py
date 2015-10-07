@@ -82,7 +82,9 @@ class Map(object):
                         pos += 1
                 elif layer['type'] == 'objectgroup':
                     for o in layer['objects']:
-                        if 'start' in o['properties']:
+                        if 'door' in o['properties']:
+                            print 'object is door'
+                        elif 'start' in o['properties']:
                             self.starting_location = (o['x'], o['y'])
                             print 'Starting location is {0}'.format(self.starting_location)
                         else:

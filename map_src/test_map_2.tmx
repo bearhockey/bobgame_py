@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="42" height="42" tilewidth="32" tileheight="32" nextobjectid="17">
- <tileset firstgid="1" name="rp_maker_vx" tilewidth="32" tileheight="32" tilecount="2016">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="42" height="42" tilewidth="32" tileheight="32" nextobjectid="19">
+ <tileset firstgid="1" name="rp_maker_vx" tilewidth="32" tileheight="32">
   <image source="../assets/rpg_maker_vx_rtp_tileset_by_telles0808.png" width="1024" height="2016"/>
  </tileset>
  <layer name="layer_0" width="42" height="42">
@@ -5326,6 +5326,13 @@
   <object id="15" name="start" gid="1" x="408" y="380" width="32" height="32">
    <properties>
     <property name="start" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="doors">
+  <object id="18" name="door1" x="481" y="996" width="28" height="24">
+   <properties>
+    <property name="door" value=""/>
    </properties>
   </object>
  </objectgroup>

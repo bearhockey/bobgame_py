@@ -42,6 +42,8 @@ class Camera(object):
         if self.map.starting_location:
             self.player.teleport(self.map.starting_location[0], self.map.starting_location[1])
         self.view = pygame.Surface(self.map.map_size)
+        self.cam_offset_x = self.player.sprite_rect.left
+        self.cam_offset_y = self.player.sprite_rect.top
 
     def update(self, screen):
         delay = self.controller.poll(self.map, self.text_box, self.delay_timer, self.action_map)
