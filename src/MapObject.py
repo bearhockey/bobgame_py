@@ -24,6 +24,11 @@ class MapObject(object):
     def draw(self, screen, tileset_image):
         screen.blit(tileset_image, self.position, area=self.tileset_rect)
 
+    def get_offset(self, cam_offset):
+        new_x = self.position.left + cam_offset[0]
+        new_y = self.position.top + cam_offset[1]
+        return pygame.Rect(new_x, new_y, self.position.width, self.position.height)
+
     def action(self):
         if 'action' in self.properties:
             return self.properties['action']

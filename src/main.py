@@ -14,7 +14,7 @@ black = (0, 0, 0)
 # needs to be set before any images are loaded
 screen = pygame.display.set_mode(screen_size)
 
-peter = Player(SpriteSheet('..\\assets\\pete3a.png', 32, 48), pygame.Rect(10, 10, 32, 48), 8, 4)
+peter = Player(SpriteSheet('..\\assets\\pete3a.png', 32, 48), pygame.Rect(10, 10, 32, 48), 8, 2)
 
 camera = Camera(screen_size, peter)
 camera.load_map('..\\assets\\test_map_1.json')

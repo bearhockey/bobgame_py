@@ -36,17 +36,17 @@ class Map(object):
         self.upper_map.set_colorkey(self.trans_color)
         self.build_map()
 
-    def draw(self, screen, cam_offset, passmap=False):
-        # screen.blit(self.lower_map, (0, 0))
-        screen.blit(self.lower_map, cam_offset)
+    def draw(self, screen, passmap=False):
+        screen.blit(self.lower_map, (0, 0))
+        # screen.blit(self.lower_map)
         if passmap:
             for block in self.passmap:
                 pygame.draw.rect(screen, (255, 255, 255), block)
         for o in self.object_list:
             o.draw(screen, self.map_tileset)
 
-    def draw_upper(self, screen, cam_offset):
-        screen.blit(self.upper_map, cam_offset)
+    def draw_upper(self, screen):
+        screen.blit(self.upper_map, (0, 0))
 
     def build_map(self):
         for layer in self.map_data['layers']:

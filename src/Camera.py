@@ -12,13 +12,19 @@ class Camera(object):
         print 'this is a camera'
 
         self.screen_size = screen_size
+        self.view = None
 
         self.player = player
         self.controller = Controller(self.player)
         self.delay_timer = 0
 
+        self.center_box = pygame.Rect(self.screen_size[0]/4, self.screen_size[1]/4,
+                                      self.screen_size[0]/2, self.screen_size[1]/2)
+
+        self.cam_center = (self.screen_size[0]/2, self.screen_size[1]/2)
         self.cam_offset_x = 0
         self.cam_offset_y = 0
+        self.camera_speed = self.player.speed
         self.map = None
         self.action_map = None
 
@@ -35,17 +41,27 @@ class Camera(object):
         self.map = Map(map_url, self.screen_size, self.text_box)
         if self.map.starting_location:
             self.player.teleport(self.map.starting_location[0], self.map.starting_location[1])
+        self.view = pygame.Surface(self.map.map_size)
 
     def update(self, screen):
         delay = self.controller.poll(self.map, self.text_box, self.delay_timer, self.action_map)
         if delay:
             self.delay_timer += delay
         # check if camera should shift
-        if self.player.sprite_rect.top > self.screen_size[1]/2:
-            self.cam_offset_y -= 1
-        self.map.draw(screen, (self.cam_offset_x, self.cam_offset_y), passmap=False)
-        self.player.draw(screen)
-        self.map.draw_upper(screen, (self.cam_offset_x, self.cam_offset_y))
+        if self.player.sprite_rect.left < self.cam_offset_x-self.center_box.left:
+            self.cam_offset_x -= self.camera_speed
+        elif self.player.sprite_rect.left > self.cam_offset_x+self.center_box.left:
+            self.cam_offset_x += self.camera_speed
+        if self.player.sprite_rect.top < self.cam_offset_y-self.center_box.top:
+            self.cam_offset_y -= self.camera_speed
+        elif self.player.sprite_rect.top > self.cam_offset_y+self.center_box.top:
+            self.cam_offset_y += self.camera_speed
+
+        self.map.draw(self.view, passmap=False)
+        self.player.draw(self.view)
+        self.map.draw_upper(self.view)
+
+        screen.blit(self.view, (self.cam_center[0]-self.cam_offset_x, self.cam_center[1]-self.cam_offset_y))
         if self.text_box:
             self.text_box.draw(screen)
 
