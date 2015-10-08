@@ -38,7 +38,7 @@ class Camera(object):
         self.action_map = ActionMap(action_map_url, self.text_box)
 
     def load_map(self, map_url):
-        self.map = Map(map_url, self.screen_size, self.text_box)
+        self.map = Map(map_url, self.text_box)
         if self.map.starting_location:
             self.player.teleport(self.map.starting_location[0], self.map.starting_location[1])
         self.view = pygame.Surface(self.map.map_size)

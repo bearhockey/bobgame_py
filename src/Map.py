@@ -1,13 +1,17 @@
-import pygame
 import json
+import os
+import pygame
+
+from Door import Door
 from MapObject import MapObject
 
 
 class Map(object):
-    def __init__(self, map_file, screen_size, text_box=None):
+    def __init__(self, map_file, text_box=None):
         self.name = 'Hey'
         self.passmap = []
         self.object_list = []
+        self.door_list = []
         self.text_box = text_box
         with open(map_file) as data_file:
             self.map_data = json.load(data_file)
@@ -20,7 +24,10 @@ class Map(object):
                              't_width': self.map_data['tilesets'][0]['tilewidth'],
                              't_height': self.map_data['tilesets'][0]['tileheight']
                              }
-        self.map_tileset = pygame.image.load('..\\assets\\{0}'.format(self.tileset_data['image']))
+        self.map_location = '../assets/world/'
+        self.map_tileset = pygame.image.load(os.path.normpath('{0}{1}'.format(self.map_location,
+                                                                              self.tileset_data['image'])))
+        # self.map_tileset = pygame.image.load('..\\assets\\world\\{0}'.format(self.tileset_data['image']))
         # self.map_size = screen_size
         self.map_size = (self.map_data['width'] * self.map_data['tilewidth'],
                          self.map_data['height'] * self.map_data['tileheight'])
@@ -83,7 +90,7 @@ class Map(object):
                 elif layer['type'] == 'objectgroup':
                     for o in layer['objects']:
                         if 'door' in o['properties']:
-                            print 'object is door'
+                            self.door_list.append(Door(o))
                         elif 'start' in o['properties']:
                             self.starting_location = (o['x'], o['y'])
                             print 'Starting location is {0}'.format(self.starting_location)
