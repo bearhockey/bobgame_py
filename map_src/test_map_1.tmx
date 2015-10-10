@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="42" height="42" tilewidth="32" tileheight="32" nextobjectid="5">
- <tileset firstgid="1" name="rpg" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="42" height="42" tilewidth="32" tileheight="32" nextobjectid="6">
+ <tileset firstgid="1" name="rpg" tilewidth="32" tileheight="32" tilecount="2016">
   <image source="../assets/world/tilesets/rpg_maker_vx_rtp_tileset_by_telles0808.png" width="1024" height="2016"/>
  </tileset>
  <layer name="base" width="42" height="42">
@@ -3556,7 +3556,19 @@
    </properties>
   </object>
  </objectgroup>
+ <objectgroup name="doors">
+  <object id="5" x="481" y="387" width="29" height="26">
+   <properties>
+    <property name="door" value="test_map_1a.json"/>
+    <property name="x" value="15"/>
+    <property name="y" value="13"/>
+   </properties>
+  </object>
+ </objectgroup>
  <layer name="upper" width="42" height="42">
+  <properties>
+   <property name="upper" value="True"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -5801,11 +5813,11 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="33"/>
-   <tile gid="33"/>
-   <tile gid="33"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="33"/>
-   <tile gid="33"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="33"/>
    <tile gid="0"/>
    <tile gid="0"/>

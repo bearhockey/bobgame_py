@@ -57,7 +57,7 @@ class Player(pygame.sprite.Sprite):
         self.sprite_rect.move_ip(x, y)
         self.pass_rect.move_ip(x, y)
 
-    def teleport(self, x, y):
+    def teleport(self, (x, y)):
         self.sprite_rect.left = x
         self.sprite_rect.top = y
         self.translate_pass_rect()

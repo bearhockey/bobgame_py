@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="42" height="42" tilewidth="32" tileheight="32" nextobjectid="23">
- <tileset firstgid="1" name="rp_maker_vx" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="rp_maker_vx" tilewidth="32" tileheight="32" tilecount="2016">
   <image source="../assets/rpg_maker_vx_rtp_tileset_by_telles0808.png" width="1024" height="2016"/>
  </tileset>
  <layer name="layer_0" width="42" height="42">

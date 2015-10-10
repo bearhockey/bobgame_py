@@ -27,8 +27,6 @@ class Map(object):
         self.map_location = '../assets/world/'
         self.map_tileset = pygame.image.load(os.path.normpath('{0}{1}'.format(self.map_location,
                                                                               self.tileset_data['image'])))
-        # self.map_tileset = pygame.image.load('..\\assets\\world\\{0}'.format(self.tileset_data['image']))
-        # self.map_size = screen_size
         self.map_size = (self.map_data['width'] * self.map_data['tilewidth'],
                          self.map_data['height'] * self.map_data['tileheight'])
         print 'Map size {0}'.format(self.map_size)
@@ -45,7 +43,6 @@ class Map(object):
 
     def draw(self, screen, passmap=False):
         screen.blit(self.lower_map, (0, 0))
-        # screen.blit(self.lower_map)
         if passmap:
             for block in self.passmap:
                 pygame.draw.rect(screen, (255, 255, 255), block)
