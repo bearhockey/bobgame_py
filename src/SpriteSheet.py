@@ -1,5 +1,3 @@
-__author__ = 'max_hart'
-
 import pygame
 
 
@@ -15,12 +13,15 @@ class SpriteSheet(object):
         except pygame.error, message:
             raise Exception('Unable to load spritesheet image: {0} - {1}'.format(filename, message))
 
-    def draw(self, source, destination, x, y):
+    def draw(self, source, destination, x, y, flipped=False):
         rect = (x * self.width, y * self.height, self.width, self.height)
-        source.blit(self.sheet, destination, area=rect)
+        if flipped:
+            source.blit(pygame.transform.flip(self.sheet, 1, 0), destination, area=rect)
+        else:
+            source.blit(self.sheet, destination, area=rect)
 
-    def animate(self, source, destination, row, wait_time, ping_pong=True):
-        self.draw(source, destination, self.frame, row)
+    def animate(self, source, destination, row, wait_time, ping_pong=True, flipped=False):
+        self.draw(source, destination, self.frame, row, flipped=flipped)
         if self.frame_timer == 0:
             self.frame_timer = wait_time
             if self.ping == 'ping':
