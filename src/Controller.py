@@ -5,7 +5,7 @@ class Controller(object):
     def __init__(self, player_object):
         self.player = player_object
         print 'Keyboard controller initialized or whatever'
-        self.delay_time = 15
+        self.delay_time = 10
         self.wait_time = 0
 
         self.current_action = None
@@ -17,6 +17,18 @@ class Controller(object):
                      'right': pygame.K_RIGHT,
                      'action': pygame.K_SPACE
                      }
+
+    def poll_battle(self, battle, delay_timer):
+        if self.wait_time > 0:
+            self.wait_time -= 1
+        elif pygame.key.get_focused() and delay_timer < 1:
+            press = pygame.key.get_pressed()
+            if press[self.keys['down']] != 0:
+                battle.battle_box.cursor_down()
+                return self.delay_time
+            elif press[self.keys['up']] != 0:
+                battle.battle_box.cursor_up()
+                return self.delay_time
 
     def poll(self, map_object, tbox, delay_timer, action_map):
         if self.wait_time > 0:

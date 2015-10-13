@@ -44,7 +44,7 @@ class Camera(object):
         self.in_battle = True
         sample_back = pygame.image.load(os.path.normpath('../assets/background/mountains1.png'))
         sample_bat = pygame.image.load(os.path.normpath('../assets/battleground/grass1.png'))
-        self.battle =Battle(self.screen_size, sample_bat, sample_back)
+        self.battle = Battle(self.screen_size, sample_bat, sample_back)
 
     def build_text_box(self, left=4, top=500, height=200, color=(20, 30, 200)):
         self.text_box = TextBox(pygame.Rect(left, top, self.screen_size[0] - left * 2, height), 'TEXT', color)
@@ -68,7 +68,10 @@ class Camera(object):
 
     def update(self, screen):
         if self.in_battle:
+            delay = self.controller.poll_battle(self.battle, self.delay_timer)
             self.battle.draw(screen)
+            if delay:
+                self.delay_timer += delay
         else:
             if not self.fade_in and not self.fade_out:
                 # check for door intersection here?

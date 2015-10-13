@@ -1,5 +1,6 @@
 import pygame
 
+from BattleMenu import BattleMenu
 from BattleObject import BattleObject
 from SpriteSheet import SpriteSheet
 
@@ -21,6 +22,18 @@ class Battle (object):
                                              pygame.Rect(100, 500, 100, 80)))
         self.enemy_list[0].animation_state = 0
 
+        self.battle_box = None
+        self.build_battle_menu(left=self.screen_size[0]/3+self.screen_size[0]/3, width=self.screen_size[0]/3 - 8)
+        print self.screen_size[0]/2
+
+    def build_battle_menu(self, left=4, top=10, width=None, height=200,
+                          color=(20, 30, 200)):
+        if width is None:
+            width = self.screen_size[0]/2 - 8
+        choices = ['Fight', 'Defend', 'Item']
+        self.battle_box = BattleMenu(pygame.Rect(left, top, width, height), options=choices, color=color)
+        self.battle_box.open()
+
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
         screen.blit(self.foreground, (0, self.f_position))
@@ -30,3 +43,5 @@ class Battle (object):
         if self.enemy_list:
             for e in self.enemy_list:
                 e.draw(screen)
+
+        self.battle_box.draw(screen)

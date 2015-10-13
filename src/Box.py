@@ -1,8 +1,9 @@
 import pygame
+import os
 
 
 class Box(pygame.sprite.Sprite):
-    def __init__(self, box_bounds, color=None):
+    def __init__(self, box_bounds, color=None, cursor=None):
         pygame.sprite.Sprite.__init__(self)
 
         self.font_size = 24
@@ -17,6 +18,12 @@ class Box(pygame.sprite.Sprite):
                                      self.box.width - self.border * 2,
                                      self.box.height - self.border * 2)
         self.color = color
+        if cursor:
+            self.cursor = cursor
+        else:
+            cursor_location = os.path.normpath('../assets/cursor.png')
+            self.cursor = pygame.image.load(cursor_location).convert_alpha()
+        self.cursor_offset = 32
 
     def draw(self, screen):
         if self.visible:
