@@ -41,7 +41,7 @@ class Camera(object):
         self.blackness.set_alpha(self.fade_alpha)
 
         # battle
-        self.in_battle = True
+        self.in_battle = False
         sample_back = pygame.image.load(os.path.normpath('../assets/background/mountains1.png'))
         sample_bat = pygame.image.load(os.path.normpath('../assets/battleground/grass1.png'))
         self.battle = Battle(self.screen_size, sample_bat, sample_back)
@@ -55,7 +55,7 @@ class Camera(object):
         return x, y
 
     def load_action_map(self, action_map_url):
-        self.action_map = ActionMap(action_map_url, self.text_box)
+        self.action_map = ActionMap(action_map_url, self)
 
     def load_map(self, map_url):
         real_url = os.path.join('..', 'assets', 'world', map_url)

@@ -6,7 +6,8 @@
 	},
 "2": {
     "type": "text",
-	"line_1": "I am also scarecrow"
+	"line_1": "I am also scarecrow",
+	"next": "6"
 	},
 "3": {
     "type": "text",
@@ -22,5 +23,9 @@
 "5": {
     "type": "text",
 	"line_2": "Yep, a burlap sack"
+	},
+"6": {
+    "type": "battle",
+	"battle": "1"
 	}
 }

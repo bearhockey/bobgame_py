@@ -2,12 +2,13 @@ import json
 
 
 class ActionMap(object):
-    def __init__(self, action_file, text_box):
+    def __init__(self, action_file, camera):
         # grab the action map
         with open(action_file) as data_file:
             self.action_map = json.load(data_file)
             data_file.close()
-        self.text_box = text_box
+        self.camera = camera
+        self.text_box = self.camera.text_box
 
     def get_action(self, action_id):
         return self.action_map[action_id]
@@ -26,6 +27,8 @@ class ActionMap(object):
                 return None
             elif action_type == 'wait':
                 return self.action_wait(self.action_map[action_id])
+            elif action_type == 'battle':
+                return self.action_battle(self.action_map[action_id])
 
     def action_text_box(self, text_box_data):
         if 'line_1' in text_box_data:
@@ -57,3 +60,8 @@ class ActionMap(object):
         if 'time' in action_data:
             print 'Waiting for things: {0}'.format(action_data['time'] * 60)
             return action_data['time'] * 60
+
+    def action_battle(self, action_data):
+        if 'battle' in action_data:
+            self.camera.in_battle = True
+
