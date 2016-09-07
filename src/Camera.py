@@ -55,7 +55,7 @@ class Camera(object):
         return x, y
 
     def load_action_map(self, action_map_url):
-        self.action_map = ActionMap(action_map_url, self.text_box)
+        self.action_map = ActionMap(action_map_url, self)
 
     def load_map(self, map_url):
         real_url = os.path.join('..', 'assets', 'world', map_url)

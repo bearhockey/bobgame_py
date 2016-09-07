@@ -10,6 +10,9 @@ class Battle (object):
         print 'Battle started'
         self.player_list = []
         self.enemy_list = []
+        self.top_lane = []
+        self.middle_lane = []
+        self.bottom_lane = []
 
         self.screen_size = screen_size
         self.background = background

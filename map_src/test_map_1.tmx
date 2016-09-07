@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="42" height="42" tilewidth="32" tileheight="32" nextobjectid="6">
- <tileset firstgid="1" name="rpg" tilewidth="32" tileheight="32" tilecount="2016">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="42" height="42" tilewidth="32" tileheight="32" nextobjectid="9">
+ <tileset firstgid="1" name="rpg" tilewidth="32" tileheight="32">
   <image source="../assets/world/tilesets/rpg_maker_vx_rtp_tileset_by_telles0808.png" width="1024" height="2016"/>
  </tileset>
  <layer name="base" width="42" height="42">
@@ -3540,9 +3540,9 @@
   </data>
  </layer>
  <objectgroup name="objects">
-  <object id="1" gid="1127" x="747" y="314" width="32" height="32">
+  <object id="1" gid="1127" x="722" y="556" width="32" height="32">
    <properties>
-    <property name="action" value="1"/>
+    <property name="action" value="2"/>
    </properties>
   </object>
   <object id="2" gid="1206" x="229" y="438" width="32" height="32">
@@ -3553,6 +3553,11 @@
   <object id="3" gid="1797" x="482" y="490" width="32" height="32">
    <properties>
     <property name="start" value="true"/>
+   </properties>
+  </object>
+  <object id="6" gid="1089" x="669" y="256" width="32" height="32">
+   <properties>
+    <property name="action" value="1"/>
    </properties>
   </object>
  </objectgroup>
