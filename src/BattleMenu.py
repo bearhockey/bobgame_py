@@ -20,6 +20,9 @@ class BattleMenu(Box):
             screen.blit(self.cursor, (self.inner_box.left + self.space,
                                       self.position * self.cursor_offset + self.space*1.5))
 
+    def get_action(self):
+        return self.options[self.position]
+
     def cursor_down(self):
         if self.position < 4:
             self.position += 1
