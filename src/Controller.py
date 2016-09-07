@@ -23,7 +23,10 @@ class Controller(object):
             self.wait_time -= 1
         elif pygame.key.get_focused() and delay_timer < 1:
             press = pygame.key.get_pressed()
-            if press[self.keys['down']] != 0:
+            if press[self.keys["action"]] != 0:
+                battle.character_action()
+                return self.delay_time
+            elif press[self.keys['down']] != 0:
                 battle.battle_box.cursor_down()
                 return self.delay_time
             elif press[self.keys['up']] != 0:
