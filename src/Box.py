@@ -21,7 +21,7 @@ class Box(pygame.sprite.Sprite):
         if cursor:
             self.cursor = cursor
         else:
-            cursor_location = os.path.normpath('../assets/cursor.png')
+            cursor_location = os.path.normpath("../assets/cursor.png")
             self.cursor = pygame.image.load(cursor_location).convert_alpha()
         self.cursor_offset = 32
 

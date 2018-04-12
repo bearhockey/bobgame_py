@@ -8,10 +8,10 @@ class SpriteSheet(object):
             self.height = pic_height
             self.width = pic_width
             self.frame = 0
-            self.ping = 'ping'
+            self.ping = "ping"
             self.frame_timer = 0
-        except pygame.error, message:
-            raise Exception('Unable to load spritesheet image: {0} - {1}'.format(filename, message))
+        except pygame.error:
+            raise Exception("Unable to load spritesheet image: {0}".format(filename))
 
     def draw(self, source, destination, x, y, flipped=False):
         rect = (x * self.width, y * self.height, self.width, self.height)
@@ -24,11 +24,11 @@ class SpriteSheet(object):
         self.draw(source, destination, self.frame, row, flipped=flipped)
         if self.frame_timer == 0:
             self.frame_timer = wait_time
-            if self.ping == 'ping':
+            if self.ping == "ping":
                 if ((self.frame + 1) * self.width) >= self.sheet.get_width():
                     if ping_pong:
                         self.frame -= 1
-                        self.ping = 'pong'
+                        self.ping = "pong"
                     else:
                         self.frame = 0
                 else:
@@ -36,7 +36,7 @@ class SpriteSheet(object):
             else:
                 if self.frame == 0:
                     self.frame += 1
-                    self.ping = 'ping'
+                    self.ping = "ping"
                 else:
                     self.frame -= 1
         else:

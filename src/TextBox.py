@@ -1,6 +1,6 @@
 import pygame
 
-from Box import Box
+from src.Box import Box
 
 
 class TextBox(Box):
@@ -23,7 +23,7 @@ class TextBox(Box):
             if self.portrait_url:
                 portrait_offset = 150 + self.space
                 if not self.portrait:
-                    self.portrait = pygame.image.load('..\\assets\\portraits\\{0}'.
+                    self.portrait = pygame.image.load("..\\assets\\portraits\\{0}".
                                                       format(self.portrait_url)).convert_alpha()
             else:
                 portrait_offset = 0
@@ -48,10 +48,10 @@ class TextBox(Box):
             if self.choice:
                 screen.fill(self.white, self.choice_box)
                 screen.fill(self.color, self.choice_inner_box)
-                screen.blit(self.font.render('Yes', True, self.white),
+                screen.blit(self.font.render("Yes", True, self.white),
                             (self.choice_inner_box.left + self.space,
                             self.choice_inner_box.top + self.space))
-                screen.blit(self.font.render('No', True, self.white),
+                screen.blit(self.font.render("No", True, self.white),
                             (self.choice_inner_box.left + self.space,
                             self.choice_inner_box.top + self.space * 2 + self.font_size))
 

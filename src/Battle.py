@@ -1,14 +1,14 @@
 import pygame
 
-from BattleMenu import BattleMenu
-from BattleObject import BattleObject
-from BattleWheel import BattleWheel
-from SpriteSheet import SpriteSheet
+from src.BattleMenu import BattleMenu
+from src.BattleObject import BattleObject
+from src.BattleWheel import BattleWheel
+from src.SpriteSheet import SpriteSheet
 
 
 class Battle (object):
     def __init__(self, screen_size, foreground=None, background=None):
-        print 'Battle started'
+        print("Battle started")
         self.player_list = []
         self.enemy_list = []
         self.top_lane = []
@@ -22,9 +22,9 @@ class Battle (object):
         self.foreground = foreground
         self.f_position = self.screen_size[1]/2
 
-        self.player_list.append(BattleObject(SpriteSheet('..\\assets\\battle\\ninjabob1.png', 48, 48),
+        self.player_list.append(BattleObject(SpriteSheet("..\\assets\\battle\\ninjabob1.png", 48, 48),
                                              pygame.Rect(900, 400, 48, 48)))
-        self.enemy_list.append(BattleObject(SpriteSheet('..\\assets\\battle\\fxy.png', 100, 80),
+        self.enemy_list.append(BattleObject(SpriteSheet("..\\assets\\battle\\fxy.png", 100, 80),
                                              pygame.Rect(100, 500, 100, 80)))
         self.enemy_list[0].animation_state = 0
         self.enemy_list[0].actions = ["poop", "hgey", "not", "great"]

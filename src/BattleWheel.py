@@ -3,7 +3,7 @@ import pygame
 
 class BattleWheel(object):
     def __init__(self, actors, position=(100, 100), radius=100, background=(0, 0, 0)):
-        print 'I am wheel'
+        print("I am wheel")
         self.members = actors
         self.position = position
         self.radius = radius

@@ -1,6 +1,6 @@
-import pygame
+# import pygame
 
-from Box import Box
+from src.Box import Box
 
 
 class BattleMenu(Box):

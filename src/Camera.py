@@ -1,12 +1,11 @@
 import pygame
 import os
 
-from ActionMap import ActionMap
-from Battle import Battle
-from Controller import Controller
-from Map import Map
-from Player import Player
-from TextBox import TextBox
+from src.ActionMap import ActionMap
+from src.Battle import Battle
+from src.Controller import Controller
+from src.Map import Map
+from src.TextBox import TextBox
 
 
 class Camera(object):
@@ -42,26 +41,26 @@ class Camera(object):
 
         # battle
         self.in_battle = False
-        sample_back = pygame.image.load(os.path.normpath('../assets/background/mountains1.png'))
-        sample_bat = pygame.image.load(os.path.normpath('../assets/battleground/grass1.png'))
+        sample_back = pygame.image.load(os.path.normpath("../assets/background/mountains1.png"))
+        sample_bat = pygame.image.load(os.path.normpath("../assets/battleground/grass1.png"))
         self.battle = Battle(self.screen_size, sample_bat, sample_back)
 
     def build_text_box(self, left=4, top=500, height=200, color=(20, 30, 200)):
-        self.text_box = TextBox(pygame.Rect(left, top, self.screen_size[0] - left * 2, height), 'TEXT', color)
+        self.text_box = TextBox(pygame.Rect(left, top, self.screen_size[0] - left * 2, height), "TEXT", color)
 
     def convert_door_destination(self, cords):
-        x = int(cords[0]) * self.map.tileset_data['t_width']
-        y = int(cords[1]) * self.map.tileset_data['t_height']
+        x = int(cords[0]) * self.map.tileset_data["t_width"]
+        y = int(cords[1]) * self.map.tileset_data["t_height"]
         return x, y
 
     def load_action_map(self, action_map_url):
         self.action_map = ActionMap(action_map_url, self)
 
     def load_map(self, map_url):
-        real_url = os.path.join('..', 'assets', 'world', map_url)
+        real_url = os.path.join("..", "assets", "world", map_url)
         self.map = Map(real_url, self.text_box)
         if self.map.starting_location:
-            self.player.teleport(self.map.starting_location)
+            self.player.teleport(x=self.map.starting_location[0], y=self.map.starting_location[1])
         self.view = pygame.Surface(self.map.map_size)
         self.cam_offset_x = self.player.sprite_rect.left
         self.cam_offset_y = self.player.sprite_rect.top
@@ -118,7 +117,8 @@ class Camera(object):
                 else:
                     self.fade_out = False
                     self.load_map(self.destination_door.destination_map)
-                    self.player.teleport(self.convert_door_destination(self.destination_door.destination_cords))
+                    door_cords = self.convert_door_destination(self.destination_door.destination_cords)
+                    self.player.teleport(x=door_cords[0], y=door_cords[1])
 
         if self.delay_timer > 0:
             self.delay_timer -= 1
