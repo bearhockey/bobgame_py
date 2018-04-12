@@ -4,22 +4,37 @@ import pygame
 class Controller(object):
     def __init__(self, player_object):
         self.player = player_object
-        print 'Keyboard controller initialized or whatever'
-        self.delay_time = 15
+        print("Keyboard controller initialized or whatever")
+        self.delay_time = 10
         self.wait_time = 0
 
         self.current_action = None
 
         # da keys tho
-        self.keys = {'down': pygame.K_DOWN,
-                     'up': pygame.K_UP,
-                     'left': pygame.K_LEFT,
-                     'right': pygame.K_RIGHT,
-                     'action': pygame.K_SPACE
+        self.keys = {"down": pygame.K_DOWN,
+                     "up": pygame.K_UP,
+                     "left": pygame.K_LEFT,
+                     "right": pygame.K_RIGHT,
+                     "action": pygame.K_SPACE
                      }
 
+    def poll_battle(self, battle, delay_timer):
+        if self.wait_time and self.wait_time > 0:
+            self.wait_time -= 1
+        elif pygame.key.get_focused() and delay_timer < 1:
+            press = pygame.key.get_pressed()
+            if press[self.keys["action"]] != 0:
+                battle.character_action()
+                return self.delay_time
+            elif press[self.keys["down"]] != 0:
+                battle.battle_box.cursor_down()
+                return self.delay_time
+            elif press[self.keys["up"]] != 0:
+                battle.battle_box.cursor_up()
+                return self.delay_time
+
     def poll(self, map_object, tbox, delay_timer, action_map):
-        if self.wait_time > 0:
+        if self.wait_time and self.wait_time > 0:
             self.wait_time -= 1
         elif pygame.key.get_focused() and delay_timer < 1:
             press = pygame.key.get_pressed()
@@ -27,19 +42,19 @@ class Controller(object):
             # ignore everything if text box is on screen
             if self.current_action:
                 action_type = action_map.get_action_type(self.current_action)
-                if action_type == 'text':
+                if action_type == "text":
                     if press[self.keys['action']] != 0:
                         tbox.close()
                         self.next_action(action_map)
                         return self.delay_time
-                elif action_type == 'wait':
+                elif action_type == "wait":
                     self.next_action(action_map)
             else:
                 # player directionals
                 s = self.player.speed
                 test = None
-                if press[self.keys['down']] != 0:
-                    self.player.set_direction('down')
+                if press[self.keys["down"]] != 0:
+                    self.player.set_direction("down")
                     test = self.player.pass_rect.copy()
                     blocked = False
                     for x in map_object.passmap:
@@ -50,8 +65,8 @@ class Controller(object):
                             blocked = True
                     if not blocked:
                         self.player.move(0, s)
-                elif press[self.keys['up']] != 0:
-                    self.player.set_direction('up')
+                elif press[self.keys["up"]] != 0:
+                    self.player.set_direction("up")
                     test = self.player.pass_rect.copy()
                     blocked = False
                     for x in map_object.passmap:
@@ -63,8 +78,8 @@ class Controller(object):
                     if not blocked:
                         self.player.move(0, -s)
 
-                if press[self.keys['left']] != 0:
-                    self.player.set_direction('left')
+                if press[self.keys["left"]] != 0:
+                    self.player.set_direction("left")
                     test = self.player.pass_rect.copy()
                     blocked = False
                     for x in map_object.passmap:
@@ -75,8 +90,8 @@ class Controller(object):
                             blocked = True
                     if not blocked:
                         self.player.move(-s, 0)
-                elif press[self.keys['right']] != 0:
-                    self.player.set_direction('right')
+                elif press[self.keys["right"]] != 0:
+                    self.player.set_direction("right")
                     test = self.player.pass_rect.copy()
                     blocked = False
                     for x in map_object.passmap:
@@ -93,7 +108,7 @@ class Controller(object):
                 else:
                     self.player.moving = False
 
-                if press[self.keys['action']] != 0:
+                if press[self.keys["action"]] != 0:
                     for o in map_object.object_list:
                         if self.player.get_action_rect().colliderect(o.position):
                             self.current_action = o.action()
@@ -101,7 +116,7 @@ class Controller(object):
                             return self.delay_time
 
     def next_action(self, action_map):
-        if 'next' in action_map.get_action(self.current_action):
+        if "next" in action_map.get_action(self.current_action):
             self.current_action = action_map.get_next_action(self.current_action)
             self.wait_time = action_map.trigger_action(self.current_action)
         else:

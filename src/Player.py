@@ -6,10 +6,10 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, sprite_sheet, sprite_rect, horizontal_cut, veritcal_cut):
         pygame.sprite.Sprite.__init__(self)
 
-        self.direction_dir = {'down': 0,
-                              'left': 1,
-                              'right': 2,
-                              'up': 3
+        self.direction_dir = {"down": 0,
+                              "left": 1,
+                              "right": 2,
+                              "up": 3
                               }
         self.horizontal_cut = horizontal_cut
         self.vertical_cut = veritcal_cut
@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.translate_pass_rect()
 
         self.speed = 4
-        self.direction = self.direction_dir['down']
+        self.direction = self.direction_dir["down"]
         self.moving = False
 
     def translate_pass_rect(self):
@@ -30,15 +30,15 @@ class Player(pygame.sprite.Sprite):
                                      self.sprite_rect.height / 2 - self.vertical_cut * 2)
 
     def get_action_rect(self):
-        if self.direction == self.direction_dir['up']:
+        if self.direction == self.direction_dir["up"]:
             y_mod = -1
-        elif self.direction == self.direction_dir['down']:
+        elif self.direction == self.direction_dir["down"]:
             y_mod = 1
         else:
             y_mod = 0
-        if self.direction == self.direction_dir['left']:
+        if self.direction == self.direction_dir["left"]:
             x_mod = -1
-        elif self.direction == self.direction_dir['right']:
+        elif self.direction == self.direction_dir["right"]:
             x_mod = 1
         else:
             x_mod = 0
@@ -57,7 +57,7 @@ class Player(pygame.sprite.Sprite):
         self.sprite_rect.move_ip(x, y)
         self.pass_rect.move_ip(x, y)
 
-    def teleport(self, (x, y)):
+    def teleport(self, x, y):
         self.sprite_rect.left = x
         self.sprite_rect.top = y
         self.translate_pass_rect()
