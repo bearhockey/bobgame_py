@@ -70,7 +70,8 @@ class Map(object):
                                 tile_x = (i - 1) % (self.map_data["tilesets"][0]["imagewidth"] / t_width)
                                 tile_x = tile_x * t_width
                                 tile_y = (i - 1) / (self.map_data["tilesets"][0]["imagewidth"] / t_height)
-                                tile_y = tile_y * t_height
+                                # need to figure out what the -4 is from
+                                tile_y = tile_y * t_height - 4
 
                                 if "properties" in layer \
                                         and "upper" in layer["properties"] \

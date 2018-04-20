@@ -1,0 +1,46 @@
+{ 
+  "1": {
+    "type": "text",
+    "line_1": "I am the scarecrow!",
+    "portrait": "scare_crow.png"
+  },
+  "2": {
+    "type": "text",
+    "line_1": "I am also scarecrow",
+    "next": "6"
+  },
+  "3": {
+    "type": "text",
+	"line_1": "This looks like a sack.",
+	"line_2": "Made of burlap?",
+	"next": "4"
+	},
+  "4": {
+    "type": "wait",
+	"time": 2,
+	"next": "5"
+  },
+  "5": {
+    "type": "text",
+	"line_2": "Yep, a burlap sack"
+  },
+  "6": {
+    "type": "battle",
+    "background": "mountains1.png",
+	"foreground": "grass1.png",
+    "enemies": [
+      {
+        "name": "Foxy Lady A",
+        "entity": "fox1",
+        "position": [100, 500],
+        "team": 1
+      },
+      {
+        "name": "Foxy Lady B",
+        "entity": "fox1",
+        "position": [200, 450],
+        "team": 1
+      }
+    ]
+  }
+}

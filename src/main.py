@@ -18,7 +18,7 @@ peter = Player(SpriteSheet("..\\assets\\pete3a.png", 32, 48), pygame.Rect(10, 10
 
 camera = Camera(screen_size, peter)
 camera.load_map("test_map_1.json")
-camera.load_action_map("..\\assets\\action.map")
+camera.load_action_map("..\\assets\\world\\action_map1.json")
 
 while 1:
     clock.tick(60)

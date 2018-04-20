@@ -2,7 +2,7 @@ import pygame
 import os
 
 from src.ActionMap import ActionMap
-from src.Battle import Battle
+from src.battle.Battle import Battle
 from src.Controller import Controller
 from src.Map import Map
 from src.TextBox import TextBox
@@ -41,9 +41,10 @@ class Camera(object):
 
         # battle
         self.in_battle = False
-        sample_back = pygame.image.load(os.path.normpath("../assets/background/mountains1.png"))
-        sample_bat = pygame.image.load(os.path.normpath("../assets/battleground/grass1.png"))
-        self.battle = Battle(self.screen_size, sample_bat, sample_back)
+        # sample_back = pygame.image.load(os.path.normpath("../assets/background/mountains1.png"))
+        # sample_bat = pygame.image.load(os.path.normpath("../assets/battleground/grass1.png"))
+        # self.battle = Battle(self.screen_size, sample_bat, sample_back)
+        self.battle = None
 
     def build_text_box(self, left=4, top=500, height=200, color=(20, 30, 200)):
         self.text_box = TextBox(pygame.Rect(left, top, self.screen_size[0] - left * 2, height), "TEXT", color)
@@ -65,12 +66,19 @@ class Camera(object):
         self.cam_offset_x = self.player.sprite_rect.left
         self.cam_offset_y = self.player.sprite_rect.top
 
+    def start_battle(self, battle_info):
+        self.battle = Battle(screen_size=self.screen_size, battle_info=battle_info)
+        self.in_battle = True
+
     def update(self, screen):
         if self.in_battle:
-            delay = self.controller.poll_battle(self.battle, self.delay_timer)
-            self.battle.draw(screen)
-            if delay:
-                self.delay_timer += delay
+            if self.battle.state == "END":
+                self.in_battle = False
+            else:
+                delay = self.controller.poll_battle(self.battle, self.delay_timer)
+                self.battle.draw(screen)
+                if delay:
+                    self.delay_timer += delay
         else:
             if not self.fade_in and not self.fade_out:
                 # check for door intersection here?
@@ -79,7 +87,7 @@ class Camera(object):
                         self.destination_door = d
                         self.fade_alpha = 0
                         self.fade_out = True
-                delay = self.controller.poll(self.map, self.text_box, self.delay_timer, self.action_map)
+                delay = self.controller.poll(self, self.text_box, self.delay_timer, self.action_map)
                 if delay:
                     self.delay_timer += delay
                 # check if camera should shift
