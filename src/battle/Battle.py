@@ -10,7 +10,7 @@ from src.SpriteSheet import SpriteSheet
 
 
 class Battle (object):
-    def __init__(self, screen_size, battle_info):
+    def __init__(self, screen_size, battle_info, player):
         # grab list of battle actions (gonna be a lot; maybe trim this down somehow?)
         real_url = os.path.join("..", "assets", "data", "battle_action.json")
         with open(real_url) as data_file:
@@ -30,11 +30,7 @@ class Battle (object):
         self.f_position = self.screen_size[1]/2
 
         # load players
-        self.object_list.append(BattleObject(name="player",
-                                             sprite_sheet=SpriteSheet("..\\assets\\battle\\ninjabob1.png", 48, 48),
-                                             sprite_rect=pygame.Rect(900, 400, 48, 48),
-                                             team=0,
-                                             stats={"HP": 50, "STR": 5, "DEF": 4}))
+        self.object_list.append(player.battle_object)
         # load enemies
         with open(os.path.join("..", "assets", "data", "enemy_map.json")) as enemy_file:
             enemy_list = json.load(enemy_file)
@@ -49,11 +45,13 @@ class Battle (object):
                                           enemy["position"][1],
                                           enemy_data["sprite_size"][0],
                                           enemy_data["sprite_size"][1])
+                # make sure to copy the stats dict otherwise all of the same type of enemy will share HP
                 self.object_list.append(BattleObject(name=enemy["name"],
                                                      sprite_sheet=sprite_sheet,
                                                      sprite_rect=sprite_rect,
                                                      team=enemy["team"],
-                                                     stats=enemy_data["stats"]))
+                                                     stats=enemy_data["stats"].copy()))
+            enemy_file.close()
 
         self.battle_box = self.build_battle_menu(left=self.screen_size[0]/3+self.screen_size[0]/3,
                                                  width=self.screen_size[0]/3 - 8)

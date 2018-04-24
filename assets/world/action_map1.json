@@ -41,6 +41,11 @@
         "position": [200, 450],
         "team": 1
       }
-    ]
+    ],
+    "next": "7"
+  },
+  "7": {
+    "type": "text",
+    "line_1": "You supposedly won this battle."
   }
 }

@@ -58,6 +58,7 @@ class Controller(object):
                 action_type = action_map.get_action_type(self.current_action)
                 if action_type == "battle":
                     camera.start_battle(battle_info=action_map.get_action(self.current_action))
+                    self.next_action(action_map)
                 elif action_type == "text":
                     if press[self.keys['action']] != 0:
                         tbox.close()

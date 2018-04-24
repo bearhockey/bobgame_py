@@ -64,3 +64,4 @@ class ActionMap(object):
     def action_battle(self, action_data):
         if "battle" in action_data:
             self.camera.in_battle = True
+            return 60
