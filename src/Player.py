@@ -3,7 +3,7 @@ import pygame
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, sprite_sheet, sprite_rect, horizontal_cut, veritcal_cut):
+    def __init__(self, sprite_sheet, sprite_rect, horizontal_cut, veritcal_cut, battle_object):
         pygame.sprite.Sprite.__init__(self)
 
         self.direction_dir = {"down": 0,
@@ -22,6 +22,8 @@ class Player(pygame.sprite.Sprite):
         self.speed = 4
         self.direction = self.direction_dir["down"]
         self.moving = False
+
+        self.battle_object = battle_object
 
     def translate_pass_rect(self):
         self.pass_rect = pygame.Rect(self.sprite_rect.left + self.horizontal_cut,

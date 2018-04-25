@@ -12,7 +12,6 @@ class Map(object):
         self.passmap = []
         self.object_list = []
         self.door_list = []
-        self.text_box = text_box
         with open(map_file) as data_file:
             self.map_data = json.load(data_file)
             data_file.close()
@@ -70,7 +69,8 @@ class Map(object):
                                 tile_x = (i - 1) % (self.map_data["tilesets"][0]["imagewidth"] / t_width)
                                 tile_x = tile_x * t_width
                                 tile_y = (i - 1) / (self.map_data["tilesets"][0]["imagewidth"] / t_height)
-                                tile_y = tile_y * t_height
+                                # need to figure out what the -4 is from
+                                tile_y = tile_y * t_height - 4
 
                                 if "properties" in layer \
                                         and "upper" in layer["properties"] \
@@ -92,4 +92,4 @@ class Map(object):
                             self.starting_location = (o['x'], o['y'])
                             print("Starting location is {0}".format(self.starting_location))
                         else:
-                            self.object_list.append(MapObject(o, self.tileset_data, self.text_box))
+                            self.object_list.append(MapObject(o, self.tileset_data))

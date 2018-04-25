@@ -2,13 +2,12 @@ import pygame
 
 
 class MapObject(object):
-    def __init__(self, object_json, tileset_info, text_box=None):
+    def __init__(self, object_json, tileset_info):
         self.name = "You"
         self.data = object_json
         self.properties = self.data["properties"]
 
         self.tile_set_data = tileset_info
-        self.text_box = text_box
         x = (self.data["gid"] - 1) % (self.tile_set_data["width"] / self.tile_set_data["t_width"])
         x = x * self.tile_set_data["t_width"]
         y = (self.data["gid"] - 1) / self.tile_set_data["t_width"]
