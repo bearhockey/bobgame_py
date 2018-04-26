@@ -1,9 +1,10 @@
 import pygame
+import os
 # from SpriteSheet import SpriteSheet
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, sprite_sheet, sprite_rect, horizontal_cut, veritcal_cut, battle_object):
+    def __init__(self, sprite_sheet, sprite_rect, horizontal_cut, veritcal_cut, battle_object, portrait=None):
         pygame.sprite.Sprite.__init__(self)
 
         self.direction_dir = {"down": 0,
@@ -24,6 +25,11 @@ class Player(pygame.sprite.Sprite):
         self.moving = False
 
         self.battle_object = battle_object
+
+        if not portrait:
+            self.portrait = pygame.image.load(os.path.join("..", "assets", "portraits", "ball_2.gif")).convert_alpha()
+        else:
+            self.portrait = portrait
 
     def translate_pass_rect(self):
         self.pass_rect = pygame.Rect(self.sprite_rect.left + self.horizontal_cut,

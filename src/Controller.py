@@ -48,6 +48,15 @@ class Controller(object):
                     battle.battle_box.cursor_up()
                     return self.delay_time
 
+    def poll_menu(self, camera):
+        if self.wait_time and self.wait_time > 0:
+            self.wait_time -= 1
+        elif pygame.key.get_focused():
+            press = pygame.key.get_pressed()
+            if press[self.keys["cancel"]] != 0:
+                camera.close_menu()
+                self.wait_time = 10
+
     def poll(self, camera, tbox, delay_timer, action_map):
         if self.wait_time and self.wait_time > 0:
             self.wait_time -= 1
@@ -125,7 +134,10 @@ class Controller(object):
                 else:
                     self.player.moving = False
 
-                if press[self.keys["action"]] != 0:
+                if press[self.keys["cancel"]] != 0:
+                    camera.open_menu()
+                    self.wait_time = 10
+                elif press[self.keys["action"]] != 0:
                     for o in camera.map.object_list:
                         if self.player.get_action_rect().colliderect(o.position):
                             self.current_action = o.action()
