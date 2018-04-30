@@ -11,11 +11,11 @@ class Menu(Box):
 
         self.actor_list = actor_list
 
-        self.options = Box(box_bounds=pygame.Rect((box_size.width/3)*2,
-                                                  box_size.top + border_gap,
-                                                  box_size.width/3 - border_gap,
-                                                  box_size.height-border_gap*2 - border_gap),
-                           color=color)
+        self.options = MenuOptions(box_size=pygame.Rect((box_size.width/3)*2,
+                                                        box_size.top + border_gap/2,
+                                                        box_size.width/3 - border_gap,
+                                                        box_size.height-border_gap*2 - border_gap),
+                                   color=(80, 80, 150))
         self.options.open()
 
     def draw(self, screen):
@@ -26,6 +26,7 @@ class Menu(Box):
         Box.draw(self, screen)
 
     def draw_profile(self, character, color=None):
+        stats = character.battle_object.stats
         profile = pygame.Surface((500, 200))
         if color:
             profile.fill(color)
@@ -34,5 +35,19 @@ class Menu(Box):
         if character.portrait:
             profile.blit(character.portrait, (10, 10))
         p_size = 150
-        profile.blit(self.font.render(str(character.battle_object.stats["HP_MAX"]), True, self.white), (200, 20))
+        strings = ["HP: {0}/{1}".format(stats["HP_CURRENT"], stats["HP_MAX"]),
+                   "STR: {0}".format(stats["STR"]),
+                   "DEF: {0}".format(stats["DEF"])]
+        for text in strings:
+            profile.blit(self.font.render(text, True, self.white), (p_size+50, strings.index(text)*30+15))
         self.overlay.blit(profile, (20, 20))
+
+
+class MenuOptions(Box):
+    def __init__(self, box_size, color=None):
+        Box.__init__(self, box_bounds=box_size, color=color)
+
+    def draw(self, screen):
+        self.overlay.fill(self.color)
+        Box.draw(self, screen)
+
