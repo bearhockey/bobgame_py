@@ -5,13 +5,13 @@ from src.ActionMap import ActionMap
 from src.battle.Battle import Battle
 from src.Controller import Controller
 from src.Map import Map
+from src.Menu import Menu
 from src.TextBox import TextBox
 
 
 class Camera(object):
     def __init__(self, screen_size, player):
         self.screen_size = screen_size
-        self.view = None
 
         self.player = player
         self.controller = Controller(self.player)
@@ -26,6 +26,8 @@ class Camera(object):
         self.camera_speed = self.player.speed
         self.map = None
         self.action_map = None
+        self.menu = None
+        self.show_menu = False
 
         self.destination_door = None
         self.fade_alpha = 0
@@ -58,9 +60,26 @@ class Camera(object):
         self.map = Map(real_url)
         if self.map.starting_location:
             self.player.teleport(x=self.map.starting_location[0], y=self.map.starting_location[1])
-        self.view = pygame.Surface(self.map.map_size)
         self.cam_offset_x = self.player.sprite_rect.left
         self.cam_offset_y = self.player.sprite_rect.top
+
+    def draw_map(self, screen, draw_player=True):
+        view = pygame.Surface(self.map.map_size)
+        self.map.draw(view, passmap=False)
+        if draw_player:
+            self.player.draw(view)
+        self.map.draw_upper(view)
+        screen.blit(view, (self.cam_center[0] - self.cam_offset_x, self.cam_center[1] - self.cam_offset_y))
+
+    def open_menu(self):
+        self.menu = Menu(screen_size=self.screen_size, color=(20, 30, 200), actor_list=[self.player])
+        self.show_menu = True
+        self.menu.open()
+
+    def close_menu(self):
+        self.menu.close()
+        self.show_menu = False
+        self.menu = None
 
     def start_battle(self, battle_info):
         self.battle = Battle(screen_size=self.screen_size, battle_info=battle_info, player=self.player)
@@ -76,6 +95,12 @@ class Camera(object):
                 self.battle.draw(screen)
                 if delay:
                     self.delay_timer += delay
+        elif self.show_menu:
+            self.controller.poll_menu(camera=self)
+            # performance hit might be if you draw this map under the box
+            self.draw_map(screen=screen, draw_player=False)
+            if self.menu:
+                self.menu.draw(screen)
         else:
             if not self.fade_in and not self.fade_out:
                 # check for door intersection here?
@@ -98,11 +123,7 @@ class Camera(object):
                     self.cam_offset_y += self.camera_speed
 
             # draw things
-            self.map.draw(self.view, passmap=False)
-            self.player.draw(self.view)
-            self.map.draw_upper(self.view)
-
-            screen.blit(self.view, (self.cam_center[0]-self.cam_offset_x, self.cam_center[1]-self.cam_offset_y))
+            self.draw_map(screen=screen)
             # screen.blit(self.blackness, (0, 0))
             if self.text_box:
                 self.text_box.draw(screen)

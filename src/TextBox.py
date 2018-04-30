@@ -20,6 +20,7 @@ class TextBox(Box):
 
     def draw(self, screen):
         if self.visible:
+            self.overlay.fill(self.color)
             if self.portrait_url:
                 portrait_offset = 150 + self.space
                 if not self.portrait:
@@ -28,32 +29,28 @@ class TextBox(Box):
             else:
                 portrait_offset = 0
 
-            Box.draw(self, screen)
-
             if self.portrait:
-                screen.blit(self.portrait, (self.inner_box.left + self.space,
-                                            self.inner_box.top + (self.inner_box.height - 150) / 2))
+                self.overlay.blit(self.portrait, (self.space, (self.inner_box.height - 150) / 2))
             # line 1
-            screen.blit(self.font.render(self.text[0], True, self.white),
-                        (portrait_offset + self.inner_box.left + self.space,
-                         self.inner_box.top + (self.inner_box.height - 150) / 2))
+            self.overlay.blit(self.font.render(self.text[0], True, self.white),
+                              (portrait_offset + self.space, (self.inner_box.height - 150) / 2))
             # line 2
-            screen.blit(self.font.render(self.text[1], True, self.white),
-                        (portrait_offset + self.inner_box.left + self.space,
-                         self.inner_box.top + (self.inner_box.height - 150) / 2 + self.font_size * 1.2))
+            self.overlay.blit(self.font.render(self.text[1], True, self.white),
+                              (portrait_offset + self.space, (self.inner_box.height - 150) / 2 + self.font_size * 1.2))
             # line 3
-            screen.blit(self.font.render(self.text[2], True, self.white),
-                        (portrait_offset + self.inner_box.left + self.space,
-                         self.inner_box.top + (self.inner_box.height - 150) / 2 + self.font_size * 2.4))
+            self.overlay.blit(self.font.render(self.text[2], True, self.white),
+                              (portrait_offset + self.space, (self.inner_box.height - 150) / 2 + self.font_size * 2.4))
             if self.choice:
-                screen.fill(self.white, self.choice_box)
-                screen.fill(self.color, self.choice_inner_box)
-                screen.blit(self.font.render("Yes", True, self.white),
-                            (self.choice_inner_box.left + self.space,
-                            self.choice_inner_box.top + self.space))
-                screen.blit(self.font.render("No", True, self.white),
-                            (self.choice_inner_box.left + self.space,
-                            self.choice_inner_box.top + self.space * 2 + self.font_size))
+                self.overlay.fill(self.white, self.choice_box)
+                self.overlay.fill(self.color, self.choice_inner_box)
+                self.overlay.blit(self.font.render("Yes", True, self.white),
+                                  (self.choice_inner_box.left + self.space,
+                                   self.choice_inner_box.top + self.space))
+                self.overlay.blit(self.font.render("No", True, self.white),
+                                  (self.choice_inner_box.left + self.space,
+                                   self.choice_inner_box.top + self.space * 2 + self.font_size))
+
+            Box.draw(self, screen)
 
     def open(self, text=None, portrait=None, color=None, choice=None):
         if text:
