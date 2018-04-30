@@ -34,16 +34,17 @@ class BattleObject(pygame.sprite.Sprite):
             print("Attacking {0}!".format(target.name))
             target.animation_state = self.state_dict["hurt"]
             target.damage(stat=action["ACTION"]["STAT"], damage=action["ACTION"]["DAMAGE"])
-            print("{0} took {1} damage and now hags {2} HP!".format(target.name,
-                                                                    action["ACTION"]["DAMAGE"],
-                                                                    target.stats["HP"]))
+            print("{0} took {1} damage and now hags {2}/{3} HP!".format(target.name,
+                                                                        action["ACTION"]["DAMAGE"],
+                                                                        target.stats["HP_CURRENT"],
+                                                                        target.stats["HP_MAX"]))
         else:
             print("I don't know how to {0} yet...".format(action["ACTION"]["TYPE"]))
 
-    def damage(self, stat="HP", damage=0):
+    def damage(self, stat="HP_CURRENT", damage=0):
         self.stats[stat] -= damage
         # check for death
-        if self.stats["HP"] < 1:
+        if self.stats["HP_CURRENT"] < 1:
             self.dead = True
 
     def idle(self):

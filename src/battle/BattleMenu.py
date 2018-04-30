@@ -11,14 +11,14 @@ class BattleMenu(Box):
 
     def draw(self, screen):
         if self.visible:
-            Box.draw(self, screen)
+            self.overlay.fill(self.color)
             if self.options:
                 for o in self.options:
                     position = self.inner_box.top + (self.options.index(o) * self.cursor_offset)
-                    screen.blit(self.font.render(o["NAME"], True, self.white),
-                                (self.inner_box.left + self.cursor_offset + self.space*2, position + self.space))
-            screen.blit(self.cursor, (self.inner_box.left + self.space,
-                                      self.position * self.cursor_offset + self.space*1.5))
+                    self.overlay.blit(self.font.render(o["NAME"], True, self.white),
+                                      (self.cursor_offset + self.space*2, position + self.space))
+            self.overlay.blit(self.cursor, (self.space, self.position * self.cursor_offset + self.space))
+            Box.draw(self, screen)
 
     def get_action(self):
         return self.options[self.position]

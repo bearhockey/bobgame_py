@@ -11,12 +11,15 @@ class Box(pygame.sprite.Sprite):
         self.white = (255, 255, 255)
 
         self.visible = False
+        self.underlay = pygame.Surface((box_bounds.width, box_bounds.height))
         self.box = box_bounds
         self.border = 3
         self.space = self.border * 8
-        self.inner_box = pygame.Rect(self.box.left + self.border, self.box.top + self.border,
+        self.inner_box = pygame.Rect(self.border,
+                                     self.border,
                                      self.box.width - self.border * 2,
                                      self.box.height - self.border * 2)
+        self.overlay = pygame.Surface((self.inner_box.width, self.inner_box.height))
         self.color = color
         if cursor:
             self.cursor = cursor
@@ -25,10 +28,14 @@ class Box(pygame.sprite.Sprite):
             self.cursor = pygame.image.load(cursor_location).convert_alpha()
         self.cursor_offset = 32
 
+        self.underlay.fill(self.white)
+        self.underlay.fill(self.color, self.inner_box)
+
     def draw(self, screen):
         if self.visible:
-            screen.fill(self.white, self.box)
-            screen.fill(self.color, self.inner_box)
+            self.underlay.blit(self.overlay, self.inner_box)
+            screen.blit(self.underlay, (self.box.left, self.box.top))
+            # screen.blit(self.overlay, (self.box.left, self.box.top))
 
     def open(self, color=None):
         if color:

@@ -53,8 +53,8 @@ class Battle (object):
                                                      stats=enemy_data["stats"].copy()))
             enemy_file.close()
 
-        self.battle_box = self.build_battle_menu(left=self.screen_size[0]/3+self.screen_size[0]/3,
-                                                 width=self.screen_size[0]/3 - 8)
+        self.battle_box = self.build_battle_menu(left=self.screen_size[0]/2+self.screen_size[0]/4,
+                                                 width=self.screen_size[0]/4 - 8)
         self.battle_picker = BattlePicker()
 
         self.battle_wheel = BattleWheel(actors=self.object_list,

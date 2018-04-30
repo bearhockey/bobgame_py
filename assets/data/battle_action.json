@@ -2,7 +2,7 @@
   "0": {
     "NAME": "Attack",
     "DESC": "A basic, normal attack",
-    "ACTION": {"TYPE": "ATTACK", "STAT": "HP", "DAMAGE": 10},
+    "ACTION": {"TYPE": "ATTACK", "STAT": "HP_CURRENT", "DAMAGE": 10},
     "TARGET": "ENEMY"
   },
   "1": {
@@ -26,7 +26,7 @@
   "4": {
     "NAME": "Suicide",
     "DESC": "Hurt yourself",
-    "ACTION": {"TYPE": "ATTACK", "STAT": "HP", "DAMAGE": 2},
+    "ACTION": {"TYPE": "ATTACK", "STAT": "HP_CURRENT", "DAMAGE": 2},
     "TARGET": "SELF"
   }
 }

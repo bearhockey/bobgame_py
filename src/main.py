@@ -20,7 +20,7 @@ peter_battle = (BattleObject(name="player",
                              sprite_sheet=SpriteSheet("..\\assets\\battle\\ninjabob1.png", 48, 48),
                              sprite_rect=pygame.Rect(900, 400, 48, 48),
                              team=0,
-                             stats={"HP": 50, "STR": 5, "DEF": 4}))
+                             stats={"HP_MAX": 50, "HP_CURRENT": 50, "STR": 5, "DEF": 4}))
 peter = Player(sprite_sheet=SpriteSheet("..\\assets\\pete3a.png", 32, 48),
                sprite_rect=pygame.Rect(10, 10, 32, 48),
                horizontal_cut=8,

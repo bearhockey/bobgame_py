@@ -4,6 +4,6 @@
     "name": "Foxy Lady",
     "sprite_sheet": "fxy.png",
     "sprite_size": [100, 80],
-    "stats": {"HP": 50, "STR": 5, "DEF": 4}
+    "stats": {"HP_MAX": 50, "HP_CURRENT": 50, "STR": 5, "DEF": 4}
   }
 }
