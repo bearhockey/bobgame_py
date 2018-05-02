@@ -1,6 +1,6 @@
 import pygame
 
-from src.Box import Box
+from src.box.Box import Box
 
 
 class TextBox(Box):

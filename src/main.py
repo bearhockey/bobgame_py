@@ -1,5 +1,4 @@
 import pygame
-import sys
 
 from src.Camera import Camera
 from src.Player import Player
@@ -35,7 +34,7 @@ while 1:
     clock.tick(60)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            sys.exit(0)
+            camera.exit()
 
     screen.fill(black)
     camera.update(screen)

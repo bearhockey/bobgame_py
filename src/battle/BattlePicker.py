@@ -19,7 +19,7 @@ class BattlePicker(object):
                                              box.top+self.line_width,
                                              box.width,
                                              box.height),
-                                 self.line_width )
+                                 self.line_width)
                 pygame.draw.rect(screen, (255, 255, 255), box, self.line_width)
 
     def get_target(self):

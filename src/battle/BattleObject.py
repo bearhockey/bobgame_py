@@ -1,5 +1,7 @@
 import pygame
 
+from src.FloatingText import FloatingText
+
 
 class BattleObject(pygame.sprite.Sprite):
     def __init__(self, name, sprite_sheet, sprite_rect, flipped=False, team=0, stats=None):
@@ -33,13 +35,16 @@ class BattleObject(pygame.sprite.Sprite):
             self.animation_state = self.state_dict["attack"]
             print("Attacking {0}!".format(target.name))
             target.animation_state = self.state_dict["hurt"]
-            target.damage(stat=action["ACTION"]["STAT"], damage=action["ACTION"]["DAMAGE"])
+            damage = action["ACTION"]["DAMAGE"]
+            target.damage(stat=action["ACTION"]["STAT"], damage=damage)
             print("{0} took {1} damage and now hags {2}/{3} HP!".format(target.name,
                                                                         action["ACTION"]["DAMAGE"],
                                                                         target.stats["HP_CURRENT"],
                                                                         target.stats["HP_MAX"]))
+            return FloatingText(text=str(damage), box_position=target.sprite_rect, color=(255, 255, 255))
         else:
             print("I don't know how to {0} yet...".format(action["ACTION"]["TYPE"]))
+            return None
 
     def damage(self, stat="HP_CURRENT", damage=0):
         self.stats[stat] -= damage

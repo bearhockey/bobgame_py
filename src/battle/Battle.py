@@ -2,7 +2,7 @@ import json
 import os
 import pygame
 
-from src.battle.BattleMenu import BattleMenu
+from src.box.SelectBox import SelectBox
 from src.battle.BattleObject import BattleObject
 from src.battle.BattlePicker import BattlePicker
 from src.battle.BattleWheel import BattleWheel
@@ -21,6 +21,7 @@ class Battle (object):
         self.top_lane = []
         self.middle_lane = []
         self.bottom_lane = []
+        self.damage_numbers = []
 
         self.menu_color = (20, 30, 200)
 
@@ -107,7 +108,9 @@ class Battle (object):
     def character_action(self, target):
         self.state = "IDLE"
         self.battle_picker.off()
-        self.current_actor.act(action=self.battle_box.get_action(), target=target)
+        text = self.current_actor.act(action=self.battle_box.get_action(), target=target)
+        if text:
+            self.damage_numbers.append(text)
         print("{0} did {1} to {2}".format(self.current_actor.name, self.battle_box.get_action()["NAME"], target.name))
         self.battle_box.reset()
         self.end_turn()
@@ -133,7 +136,7 @@ class Battle (object):
                           color=(20, 30, 200)):
         if width is None:
             width = self.screen_size[0]/2 - 8
-        return BattleMenu(pygame.Rect(left, top, width, height), color=color)
+        return SelectBox(pygame.Rect(left, top, width, height), color=color)
 
     def draw(self, screen):
         screen.blit(self.background, (0, 0))
@@ -141,6 +144,12 @@ class Battle (object):
         if self.object_list:
             for p in self.object_list:
                 p.draw(screen)
+        for t in self.damage_numbers:
+            t.update()
+            if t.alpha < 1:
+                self.damage_numbers.remove(t)
+            else:
+                t.draw(screen=screen)
 
         self.battle_picker.draw(screen)
 

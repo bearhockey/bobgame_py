@@ -1,6 +1,7 @@
 import pygame
 
-from src.Box import Box
+from src.box.Box import Box
+from src.box.SelectBox import SelectBox
 
 
 class Menu(Box):
@@ -11,12 +12,22 @@ class Menu(Box):
 
         self.actor_list = actor_list
 
-        self.options = MenuOptions(box_size=pygame.Rect((box_size.width/3)*2,
-                                                        box_size.top + border_gap/2,
+        self.options = SelectBox(box_bounds=pygame.Rect((box_size.width/3)*2,
+                                                        box_size.top,
                                                         box_size.width/3 - border_gap,
-                                                        box_size.height-border_gap*2 - border_gap),
-                                   color=(80, 80, 150))
+                                                        box_size.height-border_gap*2),
+                                 color=(80, 80, 150))
+        self.options.options = [{"NAME": "Stats", "ACT": "PASS"},
+                                {"NAME": "Order", "ACT": "PASS"},
+                                {"NAME": "Items", "ACT": "PASS"},
+                                {"NAME": "Save & Exit", "ACT": "EXIT"}]
         self.options.open()
+
+    def act(self, action, camera):
+        if action["ACT"] == "EXIT":
+            camera.exit()
+        else:
+            print("Something: {0}".format(action["NAME"]))
 
     def draw(self, screen):
         self.overlay.fill(self.color)
@@ -41,13 +52,3 @@ class Menu(Box):
         for text in strings:
             profile.blit(self.font.render(text, True, self.white), (p_size+50, strings.index(text)*30+15))
         self.overlay.blit(profile, (20, 20))
-
-
-class MenuOptions(Box):
-    def __init__(self, box_size, color=None):
-        Box.__init__(self, box_bounds=box_size, color=color)
-
-    def draw(self, screen):
-        self.overlay.fill(self.color)
-        Box.draw(self, screen)
-

@@ -56,7 +56,8 @@ class ActionMap(object):
         self.text_box.open(text=text_lines, portrait=portrait)
         # print("This would be a text box if I had one")
 
-    def action_wait(self, action_data):
+    @staticmethod
+    def action_wait(action_data):
         if "time" in action_data:
             print("Waiting for things: {0}".format(action_data["time"] * 60))
             return action_data["time"] * 60
