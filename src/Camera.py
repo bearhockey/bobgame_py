@@ -1,5 +1,6 @@
 import pygame
 import os
+import sys
 
 from src.ActionMap import ActionMap
 from src.battle.Battle import Battle
@@ -96,11 +97,13 @@ class Camera(object):
                 if delay:
                     self.delay_timer += delay
         elif self.show_menu:
-            self.controller.poll_menu(camera=self)
+            delay = self.controller.poll_menu(camera=self, delay_timer=self.delay_timer)
             # performance hit might be if you draw this map under the box
             self.draw_map(screen=screen, draw_player=False)
             if self.menu:
                 self.menu.draw(screen)
+            if delay:
+                self.delay_timer += delay
         else:
             if not self.fade_in and not self.fade_out:
                 # check for door intersection here?
@@ -148,3 +151,7 @@ class Camera(object):
 
         if self.delay_timer > 0:
             self.delay_timer -= 1
+
+    def exit(self):
+        print("Exiting gracefully...")
+        sys.exit(0)

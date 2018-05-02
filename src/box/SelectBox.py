@@ -1,9 +1,7 @@
-# import pygame
-
-from src.Box import Box
+from src.box.Box import Box
 
 
-class BattleMenu(Box):
+class SelectBox(Box):
     def __init__(self, box_bounds, color=None):
         Box.__init__(self, box_bounds, color)
         self.options = []
