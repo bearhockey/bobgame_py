@@ -7,7 +7,6 @@ from src.battle.BattleObject import BattleObject
 from src.battle.BattlePicker import BattlePicker
 from src.battle.BattleWheel import BattleWheel
 from src.SpriteSheet import SpriteSheet
-from src.FloatingText import FloatingText
 
 
 class Battle (object):

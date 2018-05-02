@@ -152,6 +152,7 @@ class Camera(object):
         if self.delay_timer > 0:
             self.delay_timer -= 1
 
-    def exit(self):
+    @staticmethod
+    def exit():
         print("Exiting gracefully...")
         sys.exit(0)

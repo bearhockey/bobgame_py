@@ -7,7 +7,7 @@ from src.MapObject import MapObject
 
 
 class Map(object):
-    def __init__(self, map_file, text_box=None):
+    def __init__(self, map_file):
         self.name = "Hey"
         self.passmap = []
         self.object_list = []
