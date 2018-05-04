@@ -22,13 +22,18 @@ class ActionMap(object):
     def trigger_action(self, action_id):
         if action_id:
             action_type = self.get_action_type(action_id)
+            action = self.action_map[action_id]
             if action_type == "text":
-                self.action_text_box(self.action_map[action_id])
+                self.action_text_box(action)
                 return None
             elif action_type == "wait":
-                return self.action_wait(self.action_map[action_id])
+                return self.action_wait(action)
             elif action_type == "battle":
-                return self.action_battle(self.action_map[action_id])
+                return self.action_battle(action)
+            elif action_type == "MOVE":
+                return self.action_move(action)
+            else:
+                print("Unknown action type '{0}' parsed from action map ID {1}".format(action_type, action_id))
 
     def action_text_box(self, text_box_data):
         if "line_1" in text_box_data:
@@ -66,3 +71,13 @@ class ActionMap(object):
         if "battle" in action_data:
             self.camera.in_battle = True
             return 60
+
+    def action_move(self, action_data):
+        if action_data["TARGET"] == "PLAYER":
+            target = self.camera.player
+        else:
+            target = None
+            print("I DUNNO")
+        if action_data["DESTINATION"] == "RELATIVE":
+            target.set_relative_destination(x=action_data["POSITION"][0], y=action_data["POSITION"][1])
+            target.acting = True

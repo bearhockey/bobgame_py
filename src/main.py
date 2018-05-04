@@ -20,11 +20,17 @@ peter_battle = (BattleObject(name="player",
                              sprite_rect=pygame.Rect(900, 400, 48, 48),
                              team=0,
                              stats={"HP_MAX": 50, "HP_CURRENT": 50, "STR": 5, "DEF": 4}))
-peter = Player(sprite_sheet=SpriteSheet("..\\assets\\pete3a.png", 32, 48),
-               sprite_rect=pygame.Rect(10, 10, 32, 48),
-               horizontal_cut=8,
-               veritcal_cut=2,
-               battle_object=peter_battle)
+player_data = {
+    "properties": {
+        "ACTOR": "pete3a.png",
+        "WIDTH": 32,
+        "HEIGHT": 48,
+        "H_CUT": 8,
+        "V_CUT": 2,
+        "SPEED": 4
+    }
+}
+peter = Player(actor_json=player_data, battle_object=peter_battle)
 
 camera = Camera(screen_size, peter)
 camera.load_map("test_map_1.json")

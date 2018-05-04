@@ -47,5 +47,20 @@
   "7": {
     "type": "text",
     "line_1": "You supposedly won this battle."
+  },
+  "8": {
+    "type": "text",
+    "line_1": "I am wandering around aimlessly."
+  },
+  "9": {
+    "type": "text",
+    "line_1": "STEP BACK, BOY.",
+    "next": "10"
+  },
+  "10": {
+    "type": "MOVE",
+    "TARGET": "PLAYER",
+    "DESTINATION": "RELATIVE",
+    "POSITION": [-100, 0]
   }
 }
