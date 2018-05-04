@@ -2,6 +2,7 @@ import json
 import os
 import pygame
 
+from src.Actor import Actor
 from src.Door import Door
 from src.MapObject import MapObject
 
@@ -10,6 +11,7 @@ class Map(object):
     def __init__(self, map_file):
         self.name = "Hey"
         self.passmap = []
+        self.actor_list = []
         self.object_list = []
         self.door_list = []
         with open(map_file) as data_file:
@@ -47,6 +49,8 @@ class Map(object):
                 pygame.draw.rect(screen, (255, 255, 255), block)
         for o in self.object_list:
             o.draw(screen, self.map_tileset)
+        for a in self.actor_list:
+            a.draw(screen)
 
     def draw_upper(self, screen):
         screen.blit(self.upper_map, (0, 0))
@@ -91,5 +95,8 @@ class Map(object):
                         elif "start" in o["properties"]:
                             self.starting_location = (o['x'], o['y'])
                             print("Starting location is {0}".format(self.starting_location))
+                        elif "ACTOR" in o["properties"]:
+                            print("FOUND ONE")
+                            self.actor_list.append(Actor(o))
                         else:
                             self.object_list.append(MapObject(o, self.tileset_data))

@@ -20,7 +20,7 @@ class MapObject(object):
         screen.blit(tileset_image, self.position, area=self.tileset_rect)
 
     def action(self):
-        if "action" in self.properties:
-            return self.properties["action"]
+        if "ACTION" in self.properties:
+            return self.properties["ACTION"]
         else:
             return None

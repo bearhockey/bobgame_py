@@ -87,71 +87,52 @@ class Controller(object):
             else:
                 # player directionals
                 s = self.player.speed
-                test = None
+                self.player.moving = False
                 if press[self.keys["down"]] != 0:
                     self.player.set_direction("down")
-                    test = self.player.pass_rect.copy()
-                    blocked = False
-                    for x in camera.map.passmap:
-                        if test.move(0, s).colliderect(x):
-                            blocked = True
-                    for o in camera.map.object_list:
-                        if test.move(0, s).colliderect(o.position):
-                            blocked = True
-                    if not blocked:
+                    self.player.moving = True
+                    if not self.check_blocked(cord=(0, s), pass_rect=self.player.pass_rect.copy(), map=camera.map):
                         self.player.move(0, s)
                 elif press[self.keys["up"]] != 0:
                     self.player.set_direction("up")
-                    test = self.player.pass_rect.copy()
-                    blocked = False
-                    for x in camera.map.passmap:
-                        if test.move(0, -s).colliderect(x):
-                            blocked = True
-                    for o in camera.map.object_list:
-                        if test.move(0, -s).colliderect(o.position):
-                            blocked = True
-                    if not blocked:
+                    self.player.moving = True
+                    if not self.check_blocked(cord=(0, -s), pass_rect=self.player.pass_rect.copy(), map=camera.map):
                         self.player.move(0, -s)
 
                 if press[self.keys["left"]] != 0:
                     self.player.set_direction("left")
-                    test = self.player.pass_rect.copy()
-                    blocked = False
-                    for x in camera.map.passmap:
-                        if test.move(-s, 0).colliderect(x):
-                            blocked = True
-                    for o in camera.map.object_list:
-                        if test.move(-s, 0).colliderect(o.position):
-                            blocked = True
-                    if not blocked:
+                    self.player.moving = True
+                    if not self.check_blocked(cord=(-s, 0), pass_rect=self.player.pass_rect.copy(), map=camera.map):
                         self.player.move(-s, 0)
                 elif press[self.keys["right"]] != 0:
                     self.player.set_direction("right")
-                    test = self.player.pass_rect.copy()
-                    blocked = False
-                    for x in camera.map.passmap:
-                        if test.move(s, 0).colliderect(x):
-                            blocked = True
-                    for o in camera.map.object_list:
-                        if test.move(s, 0).colliderect(o.position):
-                            blocked = True
-                    if not blocked:
-                        self.player.move(s, 0)
-
-                if test is not None:
                     self.player.moving = True
-                else:
-                    self.player.moving = False
+                    if not self.check_blocked(cord=(s, 0), pass_rect=self.player.pass_rect.copy(), map=camera.map):
+                        self.player.move(s, 0)
 
                 if press[self.keys["cancel"]] != 0:
                     camera.open_menu()
                     self.wait_time = 10
                 elif press[self.keys["action"]] != 0:
-                    for o in camera.map.object_list:
+                    all_list = camera.map.object_list + camera.map.actor_list
+                    for o in all_list:
                         if self.player.get_action_rect().colliderect(o.position):
                             self.current_action = o.action()
                             action_map.trigger_action(self.current_action)
                             return self.delay_time
+
+    @staticmethod
+    def check_blocked(cord, pass_rect, map):
+        for x in map.passmap:
+            if pass_rect.move(cord[0], cord[1]).colliderect(x):
+                return True
+        for o in map.object_list:
+            if pass_rect.move(cord[0], cord[1]).colliderect(o.position):
+                return True
+        for a in map.actor_list:
+            if pass_rect.move(cord[0], cord[1]).colliderect(a.position):
+                return True
+        return False
 
     def next_action(self, action_map):
         if "next" in action_map.get_action(self.current_action):

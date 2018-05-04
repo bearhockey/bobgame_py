@@ -1,3 +1,4 @@
+import random
 import pygame
 import os
 import sys
@@ -112,7 +113,11 @@ class Camera(object):
                         self.destination_door = d
                         self.fade_alpha = 0
                         self.fade_out = True
-                delay = self.controller.poll(self, self.text_box, self.delay_timer, self.action_map)
+                if self.player.acting:
+                    self.player.move_to()
+                    delay = 0
+                else:
+                    delay = self.controller.poll(self, self.text_box, self.delay_timer, self.action_map)
                 if delay:
                     self.delay_timer += delay
                 # check if camera should shift
@@ -124,6 +129,19 @@ class Camera(object):
                     self.cam_offset_y -= self.camera_speed
                 elif self.player.sprite_rect.top > self.cam_offset_y+self.center_box.top:
                     self.cam_offset_y += self.camera_speed
+
+            # update NPC movement
+            for actor in self.map.actor_list:
+                if actor.behavior == "WANDER":
+                    if actor.internal_clock > 1:
+                        actor.move_to()
+                        actor.internal_clock -= 1
+                    else:
+                        x = random.randrange(-3, 4) * actor.position.width + actor.position.left
+                        y = random.randrange(-3, 4) * actor.position.height + actor.position.top
+                        actor.set_destination(x=x, y=y)
+                        print("MOVING ACTOR from {0}, {1} to {2}, {3}".format(actor.position.left, actor.position.top, x, y))
+                        actor.internal_clock = random.randrange(200, 400)
 
             # draw things
             self.draw_map(screen=screen)
