@@ -16,8 +16,8 @@
 	"next": "4"
 	},
   "4": {
-    "type": "wait",
-	"time": 2,
+    "type": "WAIT",
+	"TIME": 2,
 	"next": "5"
   },
   "5": {

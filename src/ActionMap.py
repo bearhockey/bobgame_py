@@ -26,7 +26,7 @@ class ActionMap(object):
             if action_type == "text":
                 self.action_text_box(action)
                 return None
-            elif action_type == "wait":
+            elif action_type == "WAIT":
                 return self.action_wait(action)
             elif action_type == "battle":
                 return self.action_battle(action)
@@ -61,16 +61,14 @@ class ActionMap(object):
         self.text_box.open(text=text_lines, portrait=portrait)
         # print("This would be a text box if I had one")
 
-    @staticmethod
-    def action_wait(action_data):
-        if "time" in action_data:
-            print("Waiting for things: {0}".format(action_data["time"] * 60))
-            return action_data["time"] * 60
+    def action_wait(self, action_data):
+        if "TIME" in action_data:
+            print("Waiting for things: {0}".format(action_data["TIME"] * 60))
+            self.camera.controller.delay_timer += action_data["TIME"] * 60
 
     def action_battle(self, action_data):
         if "battle" in action_data:
             self.camera.in_battle = True
-            return 60
 
     def action_move(self, action_data):
         if action_data["TARGET"] == "PLAYER":
