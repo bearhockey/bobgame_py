@@ -2,10 +2,9 @@ import pygame
 
 
 class Controller(object):
-    def __init__(self, player_object):
-        self.player = player_object
+    def __init__(self):
         print("Keyboard controller initialized or whatever")
-        self.delay_time = 10
+        self.delay_timer = 0
         self.wait_time = 0
 
         self.current_action = None
@@ -19,57 +18,76 @@ class Controller(object):
                      "cancel": pygame.K_ESCAPE
                      }
 
-    def poll_battle(self, battle, delay_timer):
-        if self.wait_time and self.wait_time > 0:
-            self.wait_time -= 1
-        elif pygame.key.get_focused() and delay_timer < 1:
+    def delay(self):
+        self.delay_timer += 10
+
+    def poll_battle(self, battle):
+        if self.delay_timer and self.delay_timer > 0:
+            self.delay_timer -= 1
+        elif pygame.key.get_focused():
             press = pygame.key.get_pressed()
             if battle.state == "TARGET":
                 if press[self.keys["action"]] != 0:
                     battle.character_action(target=battle.battle_picker.get_target())
-                    return self.delay_time
+                    self.delay()
                 elif press[self.keys["cancel"]] != 0:
                     battle.show_action_menu()
-                    return self.delay_time
+                    self.delay()
                 elif press[self.keys["down"]] != 0:
                     battle.battle_picker.cursor_down()
-                    return self.delay_time
+                    self.delay()
                 elif press[self.keys["up"]] != 0:
                     battle.battle_picker.cursor_up()
-                    return self.delay_time
+                    self.delay()
             elif battle.state == "MENU":
                 if press[self.keys["action"]] != 0:
                     battle.choose_target(category=battle.battle_box.get_action()["TARGET"])
-                    return self.delay_time
+                    self.delay()
                 elif press[self.keys["down"]] != 0:
                     battle.battle_box.cursor_down()
-                    return self.delay_time
+                    self.delay()
                 elif press[self.keys["up"]] != 0:
                     battle.battle_box.cursor_up()
-                    return self.delay_time
+                    self.delay()
 
-    def poll_menu(self, camera, delay_timer):
-        if self.wait_time and self.wait_time > 0:
-            self.wait_time -= 1
-        elif pygame.key.get_focused() and delay_timer < 1:
+    def poll_menu(self, menu):
+        if self.delay_timer and self.delay_timer > 0:
+            self.delay_timer -= 1
+        elif pygame.key.get_focused():
+            press = pygame.key.get_pressed()
+            if press[self.keys["action"]] != 0:
+                # menu.act(action=menu.options.get_action())
+                self.delay()
+                return menu.get_action()
+            elif press[self.keys["down"]] != 0:
+                menu.cursor_down()
+                self.delay()
+            elif press[self.keys["up"]] != 0:
+                menu.cursor_up()
+                self.delay()
+
+    def poll_main_menu(self, camera):
+        if self.delay_timer and self.delay_timer > 0:
+            self.delay_timer -= 1
+        elif pygame.key.get_focused():
             press = pygame.key.get_pressed()
             if press[self.keys["cancel"]] != 0:
                 camera.close_menu()
-                self.wait_time = 10
+                self.delay()
             elif press[self.keys["action"]] != 0:
                 camera.menu.act(action=camera.menu.options.get_action(), camera=camera)
-                return self.delay_time
+                self.delay()
             elif press[self.keys["down"]] != 0:
                 camera.menu.options.cursor_down()
-                return self.delay_time
+                self.delay()
             elif press[self.keys["up"]] != 0:
                 camera.menu.options.cursor_up()
-                return self.delay_time
+                self.delay()
 
-    def poll(self, camera, tbox, delay_timer, action_map):
-        if self.wait_time and self.wait_time > 0:
-            self.wait_time -= 1
-        elif pygame.key.get_focused() and delay_timer < 1:
+    def poll(self, camera, tbox, action_map):
+        if self.delay_timer and self.delay_timer > 0:
+            self.delay_timer -= 1
+        elif pygame.key.get_focused():
             press = pygame.key.get_pressed()
             # ignore everything if text box is on screen
             if self.current_action:
@@ -78,48 +96,48 @@ class Controller(object):
                     camera.start_battle(battle_info=action_map.get_action(self.current_action))
                     self.next_action(action_map)
                 elif action_type == "text":
-                    if press[self.keys['action']] != 0:
+                    if press[self.keys["action"]] != 0:
                         tbox.close()
                         self.next_action(action_map)
-                        return self.delay_time
+                        self.delay()
                 else:
                     self.next_action(action_map)
             else:
                 # player directionals
-                s = self.player.speed
-                self.player.moving = False
+                s = camera.player.speed
+                camera.player.moving = False
                 if press[self.keys["down"]] != 0:
-                    self.player.set_direction("down")
-                    self.player.moving = True
-                    if not self.check_blocked(cord=(0, s), pass_rect=self.player.pass_rect.copy(), map=camera.map):
-                        self.player.move(0, s)
+                    camera.player.set_direction("down")
+                    camera.player.moving = True
+                    if not self.check_blocked(cord=(0, s), pass_rect=camera.player.pass_rect.copy(), map=camera.map):
+                        camera.player.move(0, s)
                 elif press[self.keys["up"]] != 0:
-                    self.player.set_direction("up")
-                    self.player.moving = True
-                    if not self.check_blocked(cord=(0, -s), pass_rect=self.player.pass_rect.copy(), map=camera.map):
-                        self.player.move(0, -s)
+                    camera.player.set_direction("up")
+                    camera.player.moving = True
+                    if not self.check_blocked(cord=(0, -s), pass_rect=camera.player.pass_rect.copy(), map=camera.map):
+                        camera.player.move(0, -s)
 
                 if press[self.keys["left"]] != 0:
-                    self.player.set_direction("left")
-                    self.player.moving = True
-                    if not self.check_blocked(cord=(-s, 0), pass_rect=self.player.pass_rect.copy(), map=camera.map):
-                        self.player.move(-s, 0)
+                    camera.player.set_direction("left")
+                    camera.player.moving = True
+                    if not self.check_blocked(cord=(-s, 0), pass_rect=camera.player.pass_rect.copy(), map=camera.map):
+                        camera.player.move(-s, 0)
                 elif press[self.keys["right"]] != 0:
-                    self.player.set_direction("right")
-                    self.player.moving = True
-                    if not self.check_blocked(cord=(s, 0), pass_rect=self.player.pass_rect.copy(), map=camera.map):
-                        self.player.move(s, 0)
+                    camera.player.set_direction("right")
+                    camera.player.moving = True
+                    if not self.check_blocked(cord=(s, 0), pass_rect=camera.player.pass_rect.copy(), map=camera.map):
+                        camera.player.move(s, 0)
 
                 if press[self.keys["cancel"]] != 0:
                     camera.open_menu()
-                    self.wait_time = 10
+                    self.delay()
                 elif press[self.keys["action"]] != 0:
                     all_list = camera.map.object_list + camera.map.actor_list
                     for o in all_list:
-                        if self.player.get_action_rect().colliderect(o.position):
+                        if camera.player.get_action_rect().colliderect(o.position):
                             self.current_action = o.action()
                             action_map.trigger_action(self.current_action)
-                            return self.delay_time
+                            self.delay()
 
     @staticmethod
     def check_blocked(cord, pass_rect, map):
@@ -137,9 +155,9 @@ class Controller(object):
     def next_action(self, action_map):
         if "next" in action_map.get_action(self.current_action):
             self.current_action = action_map.get_next_action(self.current_action)
-            self.wait_time = action_map.trigger_action(self.current_action)
+            action_map.trigger_action(self.current_action)
             print("NEXT ACTION IS {0}".format(self.current_action))
         else:
             print("CLEARING ACTION")
             self.current_action = None
-        return self.delay_time
+        self.delay()
