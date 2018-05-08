@@ -4,9 +4,12 @@ import json
 class ActionMap(object):
     def __init__(self, action_file, camera):
         # grab the action map
-        with open(action_file) as data_file:
-            self.action_map = json.load(data_file)
-            data_file.close()
+        try:
+            with open(action_file) as data_file:
+                self.action_map = json.load(data_file)
+                data_file.close()
+        except FileNotFoundError:
+            print("Not loading this action map: {0}".format(action_file))
         self.camera = camera
         self.text_box = self.camera.text_box
 
@@ -59,7 +62,6 @@ class ActionMap(object):
             portrait = None
 
         self.text_box.open(text=text_lines, portrait=portrait)
-        # print("This would be a text box if I had one")
 
     def action_wait(self, action_data):
         if "TIME" in action_data:

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="36" height="28" tilewidth="32" tileheight="32" infinite="0" nextobjectid="12">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="36" height="28" tilewidth="32" tileheight="32" infinite="0" nextobjectid="13">
+ <properties>
+  <property name="AUTO" value="12"/>
+ </properties>
  <tileset firstgid="1" name="rpg" tilewidth="32" tileheight="32" tilecount="2016" columns="32">
   <image source="../assets/world/tilesets/rpg_maker_vx_rtp_tileset_by_telles0808.png" width="1024" height="2016"/>
  </tileset>
@@ -2067,11 +2070,23 @@
     <property name="WIDTH" type="int" value="32"/>
    </properties>
   </object>
+  <object id="12" gid="1065" x="387" y="249" width="32" height="32">
+   <properties>
+    <property name="ACTION" value="11"/>
+    <property name="ACTOR" value="pete3a.png"/>
+    <property name="BEHAVIOR" value="STAND"/>
+    <property name="HEIGHT" type="int" value="48"/>
+    <property name="H_CUT" type="int" value="8"/>
+    <property name="SPEED" type="int" value="2"/>
+    <property name="V_CUT" type="int" value="2"/>
+    <property name="WIDTH" type="int" value="32"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup name="doors">
   <object id="5" x="481" y="387" width="29" height="26">
    <properties>
-    <property name="door" value="test_map_1a.json"/>
+    <property name="door" value="test_room"/>
     <property name="x" value="15"/>
     <property name="y" value="13"/>
    </properties>

@@ -3,21 +3,26 @@ import os
 import pygame
 
 from src.Actor import Actor
+from src.ActionMap import ActionMap
 from src.Door import Door
 from src.MapObject import MapObject
 
 
 class Map(object):
-    def __init__(self, map_file):
+    def __init__(self, camera, directory, map_name="map.json", action_map="action_map.json"):
+        # universal place for maps to be stored
+        world_directory = os.path.join("..", "assets", "world")
+        map_directory = os.path.join(world_directory, directory)
+
         self.name = "Hey"
         self.passmap = []
         self.actor_list = []
         self.object_list = []
         self.door_list = []
-        with open(map_file) as data_file:
+        with open(os.path.join(map_directory, map_name)) as data_file:
             self.map_data = json.load(data_file)
             data_file.close()
-        print(self.map_data["tilesets"][0]["image"])
+
         self.tileset_data = {"name": self.map_data["tilesets"][0]["name"],
                              "image": self.map_data["tilesets"][0]["image"],
                              "width": self.map_data["tilesets"][0]["imagewidth"],
@@ -25,14 +30,15 @@ class Map(object):
                              "t_width": self.map_data["tilesets"][0]["tilewidth"],
                              "t_height": self.map_data["tilesets"][0]["tileheight"]
                              }
-        self.map_location = "../assets/world/"
-        self.map_tileset = pygame.image.load(os.path.normpath('{0}{1}'.format(self.map_location,
-                                                                              self.tileset_data["image"])))
+        self.map_tileset = pygame.image.load(os.path.join(map_directory, self.tileset_data["image"]))
         self.map_size = (self.map_data["width"] * self.map_data["tilewidth"],
                          self.map_data["height"] * self.map_data["tileheight"])
-        print("Map size {0}".format(self.map_size))
-
         self.trans_color = (255, 0, 255)
+
+        if action_map:
+            self.action_map = ActionMap(action_file=os.path.join(map_directory, action_map), camera=camera)
+        else:
+            self.action_map = None
 
         self.starting_location = None
 
@@ -41,6 +47,15 @@ class Map(object):
         self.upper_map.fill(self.trans_color)
         self.upper_map.set_colorkey(self.trans_color)
         self.build_map()
+
+        if "properties" in self.map_data:
+            if "AUTO" in self.map_data["properties"]:
+                camera.controller.trigger_action(action_map=self.action_map,
+                                                 action_id=self.map_data["properties"]["AUTO"])
+
+        # debug prints
+        # print(self.map_data["tilesets"][0]["image"])
+        # print("Map size {0}".format(self.map_size))
 
     def draw(self, screen, passmap=False):
         screen.blit(self.lower_map, (0, 0))

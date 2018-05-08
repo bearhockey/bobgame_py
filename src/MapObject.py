@@ -19,6 +19,10 @@ class MapObject(object):
     def draw(self, screen, tileset_image):
         screen.blit(tileset_image, self.position, area=self.tileset_rect)
 
+    def turn_to_face(self, direction):
+        # if the object should turn to face something, it goes here (so far, nope)
+        pass
+
     def action(self):
         if "ACTION" in self.properties:
             return self.properties["ACTION"]

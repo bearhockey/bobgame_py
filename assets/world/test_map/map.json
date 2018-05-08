@@ -170,6 +170,40 @@
                  "width":32,
                  "x":642,
                  "y":542
+                }, 
+                {
+                 "gid":1065,
+                 "height":32,
+                 "id":12,
+                 "name":"",
+                 "properties":
+                    {
+                     "ACTION":"11",
+                     "ACTOR":"pete3a.png",
+                     "BEHAVIOR":"STAND",
+                     "HEIGHT":48,
+                     "H_CUT":8,
+                     "SPEED":2,
+                     "V_CUT":2,
+                     "WIDTH":32
+                    },
+                 "propertytypes":
+                    {
+                     "ACTION":"string",
+                     "ACTOR":"string",
+                     "BEHAVIOR":"string",
+                     "HEIGHT":"int",
+                     "H_CUT":"int",
+                     "SPEED":"int",
+                     "V_CUT":"int",
+                     "WIDTH":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":387,
+                 "y":249
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -187,7 +221,7 @@
                  "name":"",
                  "properties":
                     {
-                     "door":"test_map_1a.json",
+                     "door":"test_room",
                      "x":"15",
                      "y":"13"
                     },
@@ -240,8 +274,16 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":12,
+ "nextobjectid":13,
  "orientation":"orthogonal",
+ "properties":
+    {
+     "AUTO":"12"
+    },
+ "propertytypes":
+    {
+     "AUTO":"string"
+    },
  "renderorder":"right-down",
  "tiledversion":"1.1.5",
  "tileheight":32,
@@ -249,7 +291,7 @@
         {
          "columns":32,
          "firstgid":1,
-         "image":"tilesets\/rpg_maker_vx_rtp_tileset_by_telles0808.png",
+         "image":"..\/tilesets\/rpg_maker_vx_rtp_tileset_by_telles0808.png",
          "imageheight":2016,
          "imagewidth":1024,
          "margin":0,

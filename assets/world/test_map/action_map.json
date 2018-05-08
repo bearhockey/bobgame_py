@@ -62,5 +62,15 @@
     "TARGET": "PLAYER",
     "DESTINATION": "RELATIVE",
     "POSITION": [-100, 0]
+  },
+  "11": {
+    "type": "text",
+    "line_1": "I am not wandering around.",
+    "line_3": "I like it here, thank you.",
+    "portrait": "portrait.png"
+  },
+  "12": {
+    "type": "text",
+    "line_1": "It was a dark and stormy Daniels..."
   }
 }
