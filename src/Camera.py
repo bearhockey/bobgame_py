@@ -1,9 +1,7 @@
 import random
 import pygame
-import os
 import sys
 
-from src.ActionMap import ActionMap
 from src.battle.Battle import Battle
 from src.Controller import Controller
 from src.Map import Map
@@ -26,7 +24,6 @@ class Camera(object):
         self.cam_offset_y = 0
         self.camera_speed = self.player.speed
         self.map = None
-        self.action_map = None
         self.menu = None
         self.show_menu = False
 
@@ -53,13 +50,8 @@ class Camera(object):
         y = int(cords[1]) * self.map.tileset_data["t_height"]
         return x, y
 
-    def load_action_map(self, action_map_url):
-        real_url = os.path.join("..", "assets", "world", action_map_url)
-        self.action_map = ActionMap(real_url, self)
-
-    def load_map(self, map_url):
-        real_url = os.path.join("..", "assets", "world", map_url)
-        self.map = Map(real_url)
+    def load_map(self, map_name):
+        self.map = Map(camera=self, directory=map_name)
         if self.map.starting_location:
             self.player.teleport(x=self.map.starting_location[0], y=self.map.starting_location[1])
         self.cam_offset_x = self.player.sprite_rect.left
@@ -112,7 +104,7 @@ class Camera(object):
                 if self.player.acting:
                     self.player.move_to()
                 else:
-                    self.controller.poll(self, self.text_box, self.action_map)
+                    self.controller.poll(self, self.text_box, self.map.action_map)
                 # check if camera should shift
                 if self.player.sprite_rect.left < self.cam_offset_x-self.center_box.left:
                     self.cam_offset_x -= self.camera_speed
@@ -138,7 +130,7 @@ class Camera(object):
 
             # draw things
             self.draw_map(screen=screen)
-            # screen.blit(self.blackness, (0, 0))
+            screen.blit(self.blackness, (0, 0))
             if self.text_box:
                 self.text_box.draw(screen)
 
@@ -156,10 +148,15 @@ class Camera(object):
                     screen.blit(self.blackness, (0, 0))
                 else:
                     self.fade_out = False
-                    self.load_map(self.destination_door.destination_map)
+                    self.fade_in = True
+                    print(self.destination_door.destination_map)
+                    self.load_map(map_name=self.destination_door.destination_map)
                     door_cords = self.convert_door_destination(self.destination_door.destination_cords)
                     self.player.teleport(x=door_cords[0], y=door_cords[1])
 
+    def save_game(self):
+        char_block = {"STATS": self.player}
+        save_block = {}
     @staticmethod
     def exit():
         print("Exiting gracefully...")

@@ -107,23 +107,23 @@ class Controller(object):
                 s = camera.player.speed
                 camera.player.moving = False
                 if press[self.keys["down"]] != 0:
-                    camera.player.set_direction("down")
+                    camera.player.direction = "DOWN"
                     camera.player.moving = True
                     if not self.check_blocked(cord=(0, s), pass_rect=camera.player.pass_rect.copy(), map=camera.map):
                         camera.player.move(0, s)
                 elif press[self.keys["up"]] != 0:
-                    camera.player.set_direction("up")
+                    camera.player.direction = "UP"
                     camera.player.moving = True
                     if not self.check_blocked(cord=(0, -s), pass_rect=camera.player.pass_rect.copy(), map=camera.map):
                         camera.player.move(0, -s)
 
                 if press[self.keys["left"]] != 0:
-                    camera.player.set_direction("left")
+                    camera.player.direction = "LEFT"
                     camera.player.moving = True
                     if not self.check_blocked(cord=(-s, 0), pass_rect=camera.player.pass_rect.copy(), map=camera.map):
                         camera.player.move(-s, 0)
                 elif press[self.keys["right"]] != 0:
-                    camera.player.set_direction("right")
+                    camera.player.direction = "RIGHT"
                     camera.player.moving = True
                     if not self.check_blocked(cord=(s, 0), pass_rect=camera.player.pass_rect.copy(), map=camera.map):
                         camera.player.move(s, 0)
@@ -135,9 +135,8 @@ class Controller(object):
                     all_list = camera.map.object_list + camera.map.actor_list
                     for o in all_list:
                         if camera.player.get_action_rect().colliderect(o.position):
-                            self.current_action = o.action()
-                            action_map.trigger_action(self.current_action)
-                            self.delay()
+                            o.turn_to_face(direction=camera.player.direction)
+                            self.trigger_action(action_map=action_map, action_id=o.action())
 
     @staticmethod
     def check_blocked(cord, pass_rect, map):
@@ -151,6 +150,11 @@ class Controller(object):
             if pass_rect.move(cord[0], cord[1]).colliderect(a.position):
                 return True
         return False
+
+    def trigger_action(self, action_map, action_id):
+        self.current_action = action_id
+        action_map.trigger_action(self.current_action)
+        self.delay()
 
     def next_action(self, action_map):
         if "next" in action_map.get_action(self.current_action):
