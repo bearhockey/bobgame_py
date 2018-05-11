@@ -21,6 +21,16 @@ class Controller(object):
     def delay(self):
         self.delay_timer += 10
 
+    def any_key(self):
+        if self.delay_timer and self.delay_timer > 0:
+            self.delay_timer -= 1
+        elif pygame.key.get_focused():
+            press = pygame.key.get_pressed()
+            for name, key in self.keys.items():
+                if press[key] != 0:
+                    return True
+        return False
+
     def poll_battle(self, battle):
         if self.delay_timer and self.delay_timer > 0:
             self.delay_timer -= 1
@@ -92,8 +102,9 @@ class Controller(object):
             # ignore everything if text box is on screen
             if self.current_action:
                 action_type = action_map.get_action_type(self.current_action)
-                if action_type == "battle":
-                    camera.start_battle(battle_info=action_map.get_action(self.current_action))
+                if action_type == "BATTLE":
+                    battle_index = action_map.get_action(self.current_action)["BATTLE"]
+                    camera.start_battle(battle_index=battle_index)
                     self.next_action(action_map)
                 elif action_type == "text":
                     if press[self.keys["action"]] != 0:

@@ -30,6 +30,10 @@ class BattleObject(pygame.sprite.Sprite):
         self.stats = stats or {}
         self.dead = False
 
+    def set_position(self, x, y):
+        self.sprite_rect.left = x
+        self.sprite_rect.top = y
+
     def act(self, action, target):
         if action["ACTION"]["TYPE"] == "ATTACK":
             self.animation_state = self.state_dict["attack"]

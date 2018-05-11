@@ -10,10 +10,14 @@ from src.SpriteSheet import SpriteSheet
 
 
 class Battle (object):
-    def __init__(self, screen_size, battle_info, player):
+    def __init__(self, screen_size, battle_index, team):
+        # grab battle info from encounter map
+        data_url = os.path.join("..", "assets", "data")
+        with open(os.path.join(data_url, "encounter_map.json")) as encounter_map:
+            battle_info = json.load(encounter_map)[battle_index]
+            encounter_map.close()
         # grab list of battle actions (gonna be a lot; maybe trim this down somehow?)
-        real_url = os.path.join("..", "assets", "data", "battle_action.json")
-        with open(real_url) as data_file:
+        with open(os.path.join(data_url, "battle_action.json")) as data_file:
             self.battle_actions = json.load(data_file)
             data_file.close()
         print("Battle started")
@@ -26,31 +30,34 @@ class Battle (object):
         self.menu_color = (20, 30, 200)
 
         self.screen_size = screen_size
-        self.background = pygame.image.load(os.path.join("..", "assets", "background", battle_info["background"]))
-        self.foreground = pygame.image.load(os.path.join("..", "assets", "battleground", battle_info["foreground"]))
+        self.background = pygame.image.load(os.path.join("..", "assets", "background", battle_info["BACKGROUND"]))
+        self.foreground = pygame.image.load(os.path.join("..", "assets", "battleground", battle_info["FOREGROUND"]))
         self.f_position = self.screen_size[1]/2
 
         # load players
-        self.object_list.append(player.battle_object)
+        i = 0
+        for player in team:
+            player.battle_object.set_position(x=battle_info["SLOTS"][i][0], y=battle_info["SLOTS"][i][1])
+            self.object_list.append(player.battle_object)
         # load enemies
-        with open(os.path.join("..", "assets", "data", "enemy_map.json")) as enemy_file:
+        with open(os.path.join(data_url, "enemy_map.json")) as enemy_file:
             enemy_list = json.load(enemy_file)
             enemy_file.close()
-            for enemy in battle_info["enemies"]:
-                enemy_data = enemy_list[enemy["entity"]]
+            for enemy in battle_info["ENEMIES"]:
+                enemy_data = enemy_list[enemy["ENTITY"]]
                 sprite_path = os.path.join("..", "assets", "battle", enemy_data["sprite_sheet"])
                 sprite_sheet = SpriteSheet(filename=sprite_path,
                                            pic_width=enemy_data["sprite_size"][0],
                                            pic_height=enemy_data["sprite_size"][1])
-                sprite_rect = pygame.Rect(enemy["position"][0],
-                                          enemy["position"][1],
+                sprite_rect = pygame.Rect(enemy["POSITION"][0],
+                                          enemy["POSITION"][1],
                                           enemy_data["sprite_size"][0],
                                           enemy_data["sprite_size"][1])
                 # make sure to copy the stats dict otherwise all of the same type of enemy will share HP
-                self.object_list.append(BattleObject(name=enemy["name"],
+                self.object_list.append(BattleObject(name=enemy["NAME"],
                                                      sprite_sheet=sprite_sheet,
                                                      sprite_rect=sprite_rect,
-                                                     team=enemy["team"],
+                                                     team=enemy["TEAM"],
                                                      stats=enemy_data["stats"].copy()))
             enemy_file.close()
 

@@ -1,0 +1,26 @@
+{
+  "0": {
+    "BACKGROUND": "mountains1.png",
+	"FOREGROUND": "grass1.png",
+    "SLOTS": [
+      [900, 400],
+      [915, 550],
+      [930, 600],
+      [945, 650]
+    ],
+    "ENEMIES": [
+      {
+        "NAME": "Foxy Lady A",
+        "ENTITY": "fox1",
+        "POSITION": [100, 500],
+        "TEAM": 1
+      },
+      {
+        "NAME": "Foxy Lady B",
+        "ENTITY": "fox1",
+        "POSITION": [200, 450],
+        "TEAM": 1
+      }
+    ]
+  }
+}

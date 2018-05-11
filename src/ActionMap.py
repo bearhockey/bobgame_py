@@ -39,29 +39,12 @@ class ActionMap(object):
                 print("Unknown action type '{0}' parsed from action map ID {1}".format(action_type, action_id))
 
     def action_text_box(self, text_box_data):
-        if "line_1" in text_box_data:
-            line_1 = text_box_data["line_1"]
-        else:
-            line_1 = None
-
-        if "line_2" in text_box_data:
-            line_2 = text_box_data["line_2"]
-        else:
-            line_2 = None
-
-        if "line_3" in text_box_data:
-            line_3 = text_box_data["line_3"]
-        else:
-            line_3 = None
-
-        text_lines = (line_1, line_2, line_3)
-
         if "portrait" in text_box_data:
             portrait = text_box_data["portrait"]
         else:
             portrait = None
 
-        self.text_box.open(text=text_lines, portrait=portrait)
+        self.text_box.open(text=text_box_data["TEXT"], portrait=portrait)
 
     def action_wait(self, action_data):
         if "TIME" in action_data:

@@ -5,6 +5,7 @@ import pygame
 import sys
 
 from src.battle.Battle import Battle
+from src.box.Notice import Notice
 from src.Controller import Controller
 from src.Map import Map
 from src.Menu import Menu
@@ -28,6 +29,8 @@ class Camera(object):
         self.map = None
         self.menu = None
         self.show_menu = False
+
+        self.notification = None
 
         self.destination_door = None
         self.fade_alpha = 0
@@ -79,12 +82,16 @@ class Camera(object):
         self.show_menu = False
         self.menu = None
 
-    def start_battle(self, battle_info):
-        self.battle = Battle(screen_size=self.screen_size, battle_info=battle_info, player=self.player)
+    def start_battle(self, battle_index):
+        self.battle = Battle(screen_size=self.screen_size, battle_index=battle_index, team=[self.player])
         self.in_battle = True
 
     def update(self, screen):
-        if self.in_battle:
+        if self.notification:
+            self.notification.draw(screen)
+            if self.controller.any_key():
+                self.notification = None
+        elif self.in_battle:
             if self.battle.state == "END":
                 self.in_battle = False
                 self.battle = None
@@ -172,6 +179,7 @@ class Camera(object):
         with open(save_path, 'w') as out_file:
             json.dump(save_block, out_file)
             out_file.close()
+        self.notification = Notice(screen_size=self.screen_size, text="GAME SAVED", color=(80, 80, 150))
 
     def exit(self):
         print("Exiting gracefully...")

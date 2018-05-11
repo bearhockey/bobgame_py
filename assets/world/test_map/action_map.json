@@ -1,18 +1,20 @@
 { 
   "1": {
     "type": "text",
-    "line_1": "I am the scarecrow!",
+    "TEXT": ["I am the scarecrow!"],
     "portrait": "scare_crow.png"
   },
   "2": {
     "type": "text",
-    "line_1": "I am also scarecrow",
+    "TEXT": ["I am also scarecrow"],
     "next": "6"
   },
   "3": {
     "type": "text",
-	"line_1": "This looks like a sack.",
-	"line_2": "Made of burlap?",
+	"TEXT": [
+      "This looks like a sack.",
+      "Made of burlap?"
+      ],
 	"next": "4"
 	},
   "4": {
@@ -22,39 +24,32 @@
   },
   "5": {
     "type": "text",
-	"line_2": "Yep, a burlap sack"
+	"TEXT": ["",
+      "Yep, a burlap sack"
+      ]
   },
   "6": {
-    "type": "battle",
-    "background": "mountains1.png",
-	"foreground": "grass1.png",
-    "enemies": [
-      {
-        "name": "Foxy Lady A",
-        "entity": "fox1",
-        "position": [100, 500],
-        "team": 1
-      },
-      {
-        "name": "Foxy Lady B",
-        "entity": "fox1",
-        "position": [200, 450],
-        "team": 1
-      }
-    ],
+    "type": "BATTLE",
+    "BATTLE": "0",
     "next": "7"
   },
   "7": {
     "type": "text",
-    "line_1": "You supposedly won this battle."
+    "TEXT": [
+      "You supposedly won this battle."
+    ]
   },
   "8": {
     "type": "text",
-    "line_1": "I am wandering around aimlessly."
+    "TEXT": [
+      "I am wandering around aimlessly."
+      ]
   },
   "9": {
     "type": "text",
-    "line_1": "STEP BACK, BOY.",
+    "TEXT": [
+      "STEP BACK, BOY."
+      ],
     "next": "10"
   },
   "10": {
@@ -65,12 +60,17 @@
   },
   "11": {
     "type": "text",
-    "line_1": "I am not wandering around.",
-    "line_3": "I like it here, thank you.",
+    "TEXT": [
+      "I am not wandering around.",
+      "Not like that other guy...",
+      "I like it here, thank you.",
+      "Now I'm rambling to hit the text limit. I'm trying to hit both the vertical and horizontal",
+      "limits. Looks like it gets to about the 88 character mark. Do you think this will hit it?"
+    ],
     "portrait": "portrait.png"
   },
   "12": {
     "type": "text",
-    "line_1": "It was a dark and stormy Daniels..."
+    "TEXT": ["It was a dark and stormy Daniels..."]
   }
 }

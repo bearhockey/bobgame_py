@@ -31,15 +31,14 @@ class TextBox(Box):
 
             if self.portrait:
                 self.overlay.blit(self.portrait, (self.space, (self.inner_box.height - 150) / 2))
-            # line 1
-            self.overlay.blit(self.font.render(self.text[0], True, self.white),
-                              (portrait_offset + self.space, (self.inner_box.height - 150) / 2))
-            # line 2
-            self.overlay.blit(self.font.render(self.text[1], True, self.white),
-                              (portrait_offset + self.space, (self.inner_box.height - 150) / 2 + self.font_size * 1.2))
-            # line 3
-            self.overlay.blit(self.font.render(self.text[2], True, self.white),
-                              (portrait_offset + self.space, (self.inner_box.height - 150) / 2 + self.font_size * 2.4))
+            # text
+            i = 0
+            for text in self.text:
+                if i < 5:
+                    text_offset = self.font_size * 1.3 * i
+                    self.overlay.blit(self.font.render(text, True, self.white),
+                                      (portrait_offset + self.space, (self.inner_box.height - 150) / 2 + text_offset))
+                i += 1
             if self.choice:
                 self.overlay.fill(self.white, self.choice_box)
                 self.overlay.fill(self.color, self.choice_inner_box)
