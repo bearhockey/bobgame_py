@@ -20,12 +20,16 @@ class Menu(Box):
         self.options.options = [{"NAME": "Stats", "ACT": "PASS"},
                                 {"NAME": "Order", "ACT": "PASS"},
                                 {"NAME": "Items", "ACT": "PASS"},
-                                {"NAME": "Save & Exit", "ACT": "EXIT"}]
+                                {"NAME": "Save", "ACT": "SAVE"},
+                                {"NAME": "Exit", "ACT": "EXIT"}]
         self.options.open()
 
     def act(self, action, camera):
         if action["ACT"] == "EXIT":
             camera.exit()
+        elif action["ACT"] == "SAVE":
+            camera.save_game()
+            camera.close_menu()
         else:
             print("Something: {0}".format(action["NAME"]))
 
@@ -46,7 +50,8 @@ class Menu(Box):
         if character.portrait:
             profile.blit(character.portrait, (10, 10))
         p_size = 150
-        strings = ["HP: {0}/{1}".format(stats["HP_CURRENT"], stats["HP_MAX"]),
+        strings = [character.battle_object.name,
+                   "HP: {0}/{1}".format(stats["HP_CURRENT"], stats["HP_MAX"]),
                    "STR: {0}".format(stats["STR"]),
                    "DEF: {0}".format(stats["DEF"])]
         for text in strings:

@@ -14,7 +14,7 @@ class Map(object):
         world_directory = os.path.join("..", "assets", "world")
         map_directory = os.path.join(world_directory, directory)
 
-        self.name = "Hey"
+        self.name = directory
         self.passmap = []
         self.actor_list = []
         self.object_list = []

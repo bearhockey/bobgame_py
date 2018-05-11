@@ -1,8 +1,11 @@
+import json
 import random
+from os import path
 import pygame
 import sys
 
 from src.battle.Battle import Battle
+from src.box.Notice import Notice
 from src.Controller import Controller
 from src.Map import Map
 from src.Menu import Menu
@@ -27,6 +30,8 @@ class Camera(object):
         self.menu = None
         self.show_menu = False
 
+        self.notification = None
+
         self.destination_door = None
         self.fade_alpha = 0
         self.fade_speed = 5
@@ -50,9 +55,11 @@ class Camera(object):
         y = int(cords[1]) * self.map.tileset_data["t_height"]
         return x, y
 
-    def load_map(self, map_name):
+    def load_map(self, map_name, goto=None):
         self.map = Map(camera=self, directory=map_name)
-        if self.map.starting_location:
+        if goto:
+            self.player.teleport(x=goto[0], y=goto[1])
+        elif self.map.starting_location:
             self.player.teleport(x=self.map.starting_location[0], y=self.map.starting_location[1])
         self.cam_offset_x = self.player.sprite_rect.left
         self.cam_offset_y = self.player.sprite_rect.top
@@ -75,12 +82,16 @@ class Camera(object):
         self.show_menu = False
         self.menu = None
 
-    def start_battle(self, battle_info):
-        self.battle = Battle(screen_size=self.screen_size, battle_info=battle_info, player=self.player)
+    def start_battle(self, battle_index):
+        self.battle = Battle(screen_size=self.screen_size, battle_index=battle_index, team=[self.player])
         self.in_battle = True
 
     def update(self, screen):
-        if self.in_battle:
+        if self.notification:
+            self.notification.draw(screen)
+            if self.controller.any_key():
+                self.notification = None
+        elif self.in_battle:
             if self.battle.state == "END":
                 self.in_battle = False
                 self.battle = None
@@ -125,7 +136,8 @@ class Camera(object):
                         x = random.randrange(-3, 4) * actor.position.width + actor.position.left
                         y = random.randrange(-3, 4) * actor.position.height + actor.position.top
                         actor.set_destination(x=x, y=y)
-                        print("MOVING ACTOR from {0}, {1} to {2}, {3}".format(actor.position.left, actor.position.top, x, y))
+                        # print("MOVING ACTOR from {0}, {1} to {2}, {3}".format(actor.position.left,
+                        #                                                       actor.position.top, x, y))
                         actor.internal_clock = random.randrange(200, 400)
 
             # draw things
@@ -155,9 +167,20 @@ class Camera(object):
                     self.player.teleport(x=door_cords[0], y=door_cords[1])
 
     def save_game(self):
-        char_block = {"STATS": self.player}
-        save_block = {}
-    @staticmethod
-    def exit():
+        save_path = path.join("..", "data", "save.json")
+        char_block = {"DATA": "BOBMAN",
+                      "STATS": self.player.battle_object.stats
+                      }
+        loc_block = {"MAP": self.map.name,
+                     "POSITION": (self.player.sprite_rect.left, self.player.sprite_rect.top)
+                     }
+        save_block = {"CHAR": char_block,
+                      "LOC": loc_block}
+        with open(save_path, 'w') as out_file:
+            json.dump(save_block, out_file)
+            out_file.close()
+        self.notification = Notice(screen_size=self.screen_size, text="GAME SAVED", color=(80, 80, 150))
+
+    def exit(self):
         print("Exiting gracefully...")
         sys.exit(0)

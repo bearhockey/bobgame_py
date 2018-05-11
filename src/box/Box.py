@@ -3,10 +3,10 @@ import os
 
 
 class Box(pygame.sprite.Sprite):
-    def __init__(self, box_bounds, color=None, cursor=None):
+    def __init__(self, box_bounds, color=None, cursor=None, font_size=None):
         pygame.sprite.Sprite.__init__(self)
 
-        self.font_size = 24
+        self.font_size = font_size or 24
         self.font = pygame.font.Font(pygame.font.get_default_font(), self.font_size)
         self.white = (255, 255, 255)
 
