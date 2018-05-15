@@ -1,6 +1,8 @@
 .idea/
 .idea/*
+assets/
+work/
 *.pyc
 *.exe
 *.xml
-save.json
+*.json
