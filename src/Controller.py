@@ -102,15 +102,17 @@ class Controller(object):
             # ignore everything if text box is on screen
             if self.current_action:
                 action_type = action_map.get_action_type(self.current_action)
-                if action_type == "BATTLE":
-                    battle_index = action_map.get_action(self.current_action)["BATTLE"]
-                    camera.start_battle(battle_index=battle_index)
-                    self.next_action(action_map)
-                elif action_type == "text":
+                if action_type == "CHECK":
+                    action = action_map.get_action(self.current_action)
+                    if action["FLAG"] in camera.flags:
+                        next_action = action[camera.flags[action["FLAG"]]]
+                    else:
+                        next_action = action["ELSE"]
+                    self.next_action(action_map=action_map, override=next_action)
+                elif action_type == "TEXT":
                     if press[self.keys["action"]] != 0:
                         tbox.close()
                         self.next_action(action_map)
-                        self.delay()
                 else:
                     self.next_action(action_map)
             else:
@@ -167,8 +169,11 @@ class Controller(object):
         action_map.trigger_action(self.current_action)
         self.delay()
 
-    def next_action(self, action_map):
-        if "next" in action_map.get_action(self.current_action):
+    def next_action(self, action_map, override=None):
+        if override:
+            self.current_action = str(override)
+            action_map.trigger_action(self.current_action)
+        elif "NEXT" in action_map.get_action(self.current_action):
             self.current_action = action_map.get_next_action(self.current_action)
             action_map.trigger_action(self.current_action)
             print("NEXT ACTION IS {0}".format(self.current_action))

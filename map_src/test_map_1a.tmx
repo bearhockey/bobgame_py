@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="2">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextobjectid="3">
  <tileset firstgid="1" name="rpg_thing" tilewidth="32" tileheight="32" tilecount="2016" columns="32">
   <image source="../assets/world/tilesets/rpg_maker_vx_rtp_tileset_by_telles0808.png" width="1024" height="2016"/>
  </tileset>
@@ -1824,6 +1824,13 @@
     <property name="door" value="test_map"/>
     <property name="x" value="15"/>
     <property name="y" value="13"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="objects">
+  <object id="2" gid="1065" x="482" y="215" width="32" height="32">
+   <properties>
+    <property name="ACTION" value="1"/>
    </properties>
   </object>
  </objectgroup>

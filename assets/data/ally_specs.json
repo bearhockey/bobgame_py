@@ -1,5 +1,6 @@
 {
   "BOBMAN": {
+    "NAME": "Bobman",
     "ACTOR": "pete3a.png",
     "WIDTH": 32,
     "HEIGHT": 48,
@@ -10,6 +11,20 @@
       "WIDTH": 48,
       "HEIGHT": 48,
       "BASE_STATS": {"HP_MAX": 50, "HP_CURRENT": 50, "STR": 5, "DEF": 4}
+    }
+  },
+  "MR_T": {
+    "NAME": "Mr T",
+    "ACTOR": "pete3a.png",
+    "WIDTH": 32,
+    "HEIGHT": 48,
+    "H_CUT": 8,
+    "V_CUT": 2,
+    "BATTLE": {
+      "SPRITE": "ninjabob1.png",
+      "WIDTH": 48,
+      "HEIGHT": 48,
+      "BASE_STATS": {"HP_MAX": 50, "HP_CURRENT": 50, "STR": 6, "DEF": 5}
     }
   }
 }

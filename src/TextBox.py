@@ -8,8 +8,8 @@ class TextBox(Box):
         Box.__init__(self, box_bounds, color)
 
         self.text = text
-        self.portrait_url = picture
-        self.portrait = None
+        self.portrait = self.get_image(picture)
+        self.background = None
 
         self.choice = False
         self.choice_box = pygame.Rect(self.box.right - self.box.width / 3 - 10, self.box.top - 100,
@@ -18,19 +18,24 @@ class TextBox(Box):
                                             self.choice_box.width - self.border * 2,
                                             self.choice_box.height - self.border * 2)
 
+    @staticmethod
+    def get_image(url):
+
+        if url:
+            return pygame.image.load(url).convert_alpha()
+        else:
+            return None
+
     def draw(self, screen):
         if self.visible:
+            if self.background:
+                screen.blit(self.background, (0, 0))
             self.overlay.fill(self.color)
-            if self.portrait_url:
+            if self.portrait:
                 portrait_offset = 150 + self.space
-                if not self.portrait:
-                    self.portrait = pygame.image.load("..\\assets\\portraits\\{0}".
-                                                      format(self.portrait_url)).convert_alpha()
+                self.overlay.blit(self.portrait, (self.space, (self.inner_box.height - 150) / 2))
             else:
                 portrait_offset = 0
-
-            if self.portrait:
-                self.overlay.blit(self.portrait, (self.space, (self.inner_box.height - 150) / 2))
             # text
             i = 0
             for text in self.text:
@@ -51,17 +56,19 @@ class TextBox(Box):
 
             Box.draw(self, screen)
 
-    def open(self, text=None, portrait=None, color=None, choice=None):
+    def open(self, text=None, portrait=None, color=None, choice=None, background=None):
         if text:
             self.text = text
         if portrait:
-            self.portrait_url = portrait
+            self.portrait = self.get_image(portrait)
         if choice:
             self.choice = choice
+        if background:
+            self.background = self.get_image(background)
         Box.open(self, color)
 
     def close(self):
-        self.portrait_url = None
+        self.background = None
         self.portrait = None
         self.text = None
         Box.close(self)

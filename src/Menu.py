@@ -36,13 +36,15 @@ class Menu(Box):
     def draw(self, screen):
         self.overlay.fill(self.color)
         self.options.draw(self.overlay)
+        y_offset = 0
         for actor in self.actor_list:
-            self.draw_profile(character=actor, color=(80, 80, 250))
+            self.draw_profile(character=actor, y_pos=20+y_offset, color=(80, 80, 250))
+            y_offset += 200
         Box.draw(self, screen)
 
-    def draw_profile(self, character, color=None):
+    def draw_profile(self, character, y_pos=20, color=None):
         stats = character.battle_object.stats
-        profile = pygame.Surface((500, 200))
+        profile = pygame.Surface((500, 175))
         if color:
             profile.fill(color)
         else:
@@ -56,4 +58,4 @@ class Menu(Box):
                    "DEF: {0}".format(stats["DEF"])]
         for text in strings:
             profile.blit(self.font.render(text, True, self.white), (p_size+50, strings.index(text)*30+15))
-        self.overlay.blit(profile, (20, 20))
+        self.overlay.blit(profile, (20, y_pos))
