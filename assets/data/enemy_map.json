@@ -1,9 +1,0 @@
-{
-  "fox1":
-  {
-    "name": "Foxy Lady",
-    "sprite_sheet": "fxy.png",
-    "sprite_size": [100, 100],
-    "stats": {"HP_MAX": 50, "HP_CURRENT": 50, "STR": 5, "DEF": 4}
-  }
-}
