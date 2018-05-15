@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="36" height="28" tilewidth="32" tileheight="32" infinite="0" nextobjectid="13">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="36" height="28" tilewidth="32" tileheight="32" infinite="0" nextobjectid="19">
  <properties>
   <property name="AUTO" value="12"/>
  </properties>
@@ -2054,6 +2054,16 @@
   <object id="11" gid="1799" x="800" y="348" width="32" height="32">
    <properties>
     <property name="ACTION" value="9"/>
+   </properties>
+  </object>
+  <object id="15" gid="994" x="340.149" y="609.261" width="32" height="32">
+   <properties>
+    <property name="ACTION" value="13"/>
+   </properties>
+  </object>
+  <object id="18" gid="1663" x="502.383" y="187.835" width="32" height="32">
+   <properties>
+    <property name="ACTION" value="16"/>
    </properties>
   </object>
  </objectgroup>

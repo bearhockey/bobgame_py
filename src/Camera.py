@@ -5,19 +5,29 @@ import pygame
 import sys
 
 from src.battle.Battle import Battle
+from src.battle.BattleObject import BattleObject
 from src.box.Notice import Notice
 from src.Controller import Controller
 from src.Map import Map
 from src.Menu import Menu
+from src.Player import Player
+from src.SpriteSheet import SpriteSheet
 from src.TextBox import TextBox
+
+import src.settings as settings
 
 
 class Camera(object):
-    def __init__(self, screen_size, player):
+    def __init__(self, screen_size, roster, flags):
         self.screen_size = screen_size
-
-        self.player = player
+        self.flags = flags
         self.controller = Controller()
+        # build team roster
+        self.team = []
+        for hero in roster:
+            self.add_hero(hero_data=hero)
+
+        self.player = self.team[0]
 
         self.center_box = pygame.Rect(self.screen_size[0]/4, self.screen_size[1]/4,
                                       self.screen_size[0]/2, self.screen_size[1]/2)
@@ -25,7 +35,6 @@ class Camera(object):
         self.cam_center = (self.screen_size[0]/2, self.screen_size[1]/2)
         self.cam_offset_x = 0
         self.cam_offset_y = 0
-        self.camera_speed = self.player.speed
         self.map = None
         self.menu = None
         self.show_menu = False
@@ -73,7 +82,7 @@ class Camera(object):
         screen.blit(view, (self.cam_center[0] - self.cam_offset_x, self.cam_center[1] - self.cam_offset_y))
 
     def open_menu(self):
-        self.menu = Menu(screen_size=self.screen_size, color=(20, 30, 200), actor_list=[self.player])
+        self.menu = Menu(screen_size=self.screen_size, color=(20, 30, 200), actor_list=self.team)
         self.show_menu = True
         self.menu.open()
 
@@ -81,6 +90,22 @@ class Camera(object):
         self.menu.close()
         self.show_menu = False
         self.menu = None
+
+    def add_hero(self, hero_data):
+        with open(path.join(settings.ASS_DATA, "ally_specs.json")) as data_file:
+            data = json.load(data_file)[hero_data["DATA"]]
+            player_battle = BattleObject(name=hero_data["NAME"] or data["NAME"],
+                                         sprite_sheet=SpriteSheet(path.join(settings.BATTLE, data["BATTLE"]["SPRITE"]),
+                                                                  data["BATTLE"]["WIDTH"],
+                                                                  data["BATTLE"]["HEIGHT"]),
+                                         sprite_rect=pygame.Rect(0, 0, data["BATTLE"]["WIDTH"],
+                                                                 data["BATTLE"]["HEIGHT"]),
+                                         team=0,
+                                         stats=hero_data["STATS"] or data["BATTLE"]["BASE_STATS"])
+            player_data = {"properties": data}
+            player_data["properties"]["SPEED"] = settings.PLAYER_SPEED
+            self.team.append(Player(actor_json=player_data, battle_object=player_battle))
+            data_file.close()
 
     def start_battle(self, battle_index):
         self.battle = Battle(screen_size=self.screen_size, battle_index=battle_index, team=[self.player])
@@ -115,16 +140,18 @@ class Camera(object):
                 if self.player.acting:
                     self.player.move_to()
                 else:
-                    self.controller.poll(self, self.text_box, self.map.action_map)
+                    self.controller.poll(camera=self,
+                                         tbox=self.text_box,
+                                         action_map=self.map.action_map)
                 # check if camera should shift
                 if self.player.sprite_rect.left < self.cam_offset_x-self.center_box.left:
-                    self.cam_offset_x -= self.camera_speed
+                    self.cam_offset_x -= settings.CAM_SPEED
                 elif self.player.sprite_rect.left > self.cam_offset_x+self.center_box.left:
-                    self.cam_offset_x += self.camera_speed
+                    self.cam_offset_x += settings.CAM_SPEED
                 if self.player.sprite_rect.top < self.cam_offset_y-self.center_box.top:
-                    self.cam_offset_y -= self.camera_speed
+                    self.cam_offset_y -= settings.CAM_SPEED
                 elif self.player.sprite_rect.top > self.cam_offset_y+self.center_box.top:
-                    self.cam_offset_y += self.camera_speed
+                    self.cam_offset_y += settings.CAM_SPEED
 
             # update NPC movement
             for actor in self.map.actor_list:
@@ -175,7 +202,9 @@ class Camera(object):
                      "POSITION": (self.player.sprite_rect.left, self.player.sprite_rect.top)
                      }
         save_block = {"CHAR": char_block,
-                      "LOC": loc_block}
+                      "LOC": loc_block,
+                      "FLAGS": self.flags
+                      }
         with open(save_path, 'w') as out_file:
             json.dump(save_block, out_file)
             out_file.close()

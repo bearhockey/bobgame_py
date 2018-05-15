@@ -109,9 +109,7 @@ class Map(object):
                             self.door_list.append(Door(o))
                         elif "start" in o["properties"]:
                             self.starting_location = (o['x'], o['y'])
-                            print("Starting location is {0}".format(self.starting_location))
                         elif "ACTOR" in o["properties"]:
-                            print("FOUND ONE")
                             self.actor_list.append(Actor(o))
                         else:
                             self.object_list.append(MapObject(o, self.tileset_data))

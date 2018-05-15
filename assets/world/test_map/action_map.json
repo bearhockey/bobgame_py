@@ -1,65 +1,66 @@
 { 
   "1": {
-    "type": "text",
+    "TYPE": "TEXT",
     "TEXT": ["I am the scarecrow!"],
-    "portrait": "scare_crow.png"
+    "PORTRAIT": "scare_crow.png"
   },
   "2": {
-    "type": "text",
+    "TYPE": "TEXT",
     "TEXT": ["I am also scarecrow"],
-    "next": "6"
+    "NEXT": "6"
   },
   "3": {
-    "type": "text",
+    "TYPE": "TEXT",
 	"TEXT": [
       "This looks like a sack.",
       "Made of burlap?"
       ],
-	"next": "4"
+	"NEXT": "4"
 	},
   "4": {
-    "type": "WAIT",
+    "TYPE": "WAIT",
 	"TIME": 2,
-	"next": "5"
+	"NEXT": "5"
   },
   "5": {
-    "type": "text",
+    "TYPE": "TEXT",
 	"TEXT": ["",
       "Yep, a burlap sack"
       ]
   },
   "6": {
-    "type": "BATTLE",
+    "TYPE": "BATTLE",
     "BATTLE": "0",
-    "next": "7"
+    "NEXT": "7"
   },
   "7": {
-    "type": "text",
+    "TYPE": "TEXT",
     "TEXT": [
       "You supposedly won this battle."
     ]
   },
   "8": {
-    "type": "text",
+    "TYPE": "TEXT",
     "TEXT": [
       "I am wandering around aimlessly."
       ]
   },
   "9": {
-    "type": "text",
+    "TYPE": "TEXT",
     "TEXT": [
       "STEP BACK, BOY."
       ],
-    "next": "10"
+    "NEXT": "10"
   },
   "10": {
-    "type": "MOVE",
+    "TYPE": "MOVE",
     "TARGET": "PLAYER",
     "DESTINATION": "RELATIVE",
+    "DIRECTION": "DOWN",
     "POSITION": [-100, 0]
   },
   "11": {
-    "type": "text",
+    "TYPE": "TEXT",
     "TEXT": [
       "I am not wandering around.",
       "Not like that other guy...",
@@ -67,10 +68,30 @@
       "Now I'm rambling to hit the text limit. I'm trying to hit both the vertical and horizontal",
       "limits. Looks like it gets to about the 88 character mark. Do you think this will hit it?"
     ],
-    "portrait": "portrait.png"
+    "PORTRAIT": "portrait.png",
+    "SET_FLAG": ["TEST", "ON"]
   },
   "12": {
-    "type": "text",
+    "TYPE": "TEXT",
     "TEXT": ["It was a dark and stormy Daniels..."]
+  },
+  "13": {
+    "TYPE": "CHECK",
+    "FLAG": "TEST",
+    "ON": "15",
+    "ELSE": "14"
+  },
+  "14": {
+    "TYPE": "TEXT",
+    "TEXT": ["Looks like you haven't passed the test yet..."]
+  },
+  "15": {
+    "TYPE": "TEXT",
+    "TEXT": ["You have passed ye olde test!"]
+  },
+  "16": {
+    "TYPE": "TEXT",
+    "TEXT": ["Look at this pretty mountain, I tell you hwat."],
+    "BACKGROUND": "mountains1.png"
   }
 }
