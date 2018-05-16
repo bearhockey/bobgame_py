@@ -1,7 +1,9 @@
 import pygame
-import os
+from os import path
 
 from src.SpriteSheet import SpriteSheet
+
+import src.settings as settings
 
 
 class Actor(pygame.sprite.Sprite):
@@ -13,7 +15,7 @@ class Actor(pygame.sprite.Sprite):
         self.horizontal_cut = self.data["H_CUT"]
         self.vertical_cut = self.data["V_CUT"]
 
-        self.sprite_sheet = SpriteSheet(filename=os.path.join("..", "assets", self.data["ACTOR"]),
+        self.sprite_sheet = SpriteSheet(filename=path.join(settings.ACTOR, self.data["ACTOR"]),
                                         pic_width=self.data["WIDTH"],
                                         pic_height=self.data["HEIGHT"])
         if 'x' in object_json:

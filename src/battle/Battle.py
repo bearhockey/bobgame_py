@@ -1,5 +1,5 @@
 import json
-import os
+from os import path
 import pygame
 
 from src.box.SelectBox import SelectBox
@@ -8,16 +8,17 @@ from src.battle.BattlePicker import BattlePicker
 from src.battle.BattleWheel import BattleWheel
 from src.SpriteSheet import SpriteSheet
 
+import src.settings as settings
+
 
 class Battle (object):
     def __init__(self, screen_size, battle_index, team):
         # grab battle info from encounter map
-        data_url = os.path.join("..", "assets", "data")
-        with open(os.path.join(data_url, "encounter_map.json")) as encounter_map:
+        with open(path.join(settings.ASS_DATA, "encounter_map.json")) as encounter_map:
             battle_info = json.load(encounter_map)[battle_index]
             encounter_map.close()
         # grab list of battle actions (gonna be a lot; maybe trim this down somehow?)
-        with open(os.path.join(data_url, "battle_action.json")) as data_file:
+        with open(path.join(settings.ASS_DATA, "battle_action.json")) as data_file:
             self.battle_actions = json.load(data_file)
             data_file.close()
         print("Battle started")
@@ -30,8 +31,8 @@ class Battle (object):
         self.menu_color = (20, 30, 200)
 
         self.screen_size = screen_size
-        self.background = pygame.image.load(os.path.join("..", "assets", "background", battle_info["BACKGROUND"]))
-        self.foreground = pygame.image.load(os.path.join("..", "assets", "battleground", battle_info["FOREGROUND"]))
+        self.background = pygame.image.load(path.join(settings.BACKGROUND, battle_info["BACKGROUND"]))
+        self.foreground = pygame.image.load(path.join(settings.BATTLEGROUND, battle_info["FOREGROUND"]))
         self.f_position = self.screen_size[1]/2
 
         # load players
@@ -39,13 +40,14 @@ class Battle (object):
         for player in team:
             player.battle_object.set_position(x=battle_info["SLOTS"][i][0], y=battle_info["SLOTS"][i][1])
             self.object_list.append(player.battle_object)
+            i += 1
         # load enemies
-        with open(os.path.join(data_url, "enemy_map.json")) as enemy_file:
+        with open(path.join(settings.ASS_DATA, "enemy_map.json")) as enemy_file:
             enemy_list = json.load(enemy_file)
             enemy_file.close()
             for enemy in battle_info["ENEMIES"]:
                 enemy_data = enemy_list[enemy["ENTITY"]]
-                sprite_path = os.path.join("..", "assets", "battle", enemy_data["sprite_sheet"])
+                sprite_path = path.join(settings.BATTLE, enemy_data["sprite_sheet"])
                 sprite_sheet = SpriteSheet(filename=sprite_path,
                                            pic_width=enemy_data["sprite_size"][0],
                                            pic_height=enemy_data["sprite_size"][1])

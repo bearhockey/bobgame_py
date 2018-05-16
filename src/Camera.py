@@ -108,7 +108,7 @@ class Camera(object):
             data_file.close()
 
     def start_battle(self, battle_index):
-        self.battle = Battle(screen_size=self.screen_size, battle_index=battle_index, team=[self.player])
+        self.battle = Battle(screen_size=self.screen_size, battle_index=battle_index, team=self.team)
         self.in_battle = True
 
     def update(self, screen):
