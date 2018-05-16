@@ -1,10 +1,11 @@
 import pygame
 
+import src.battle.BattleFormula as Form
 from src.FloatingText import FloatingText
 
 
 class BattleObject(pygame.sprite.Sprite):
-    def __init__(self, name, sprite_sheet, sprite_rect, flipped=False, team=0, stats=None):
+    def __init__(self, name, sprite_sheet, sprite_rect, flipped=False, team=0, stats=None, actions=None):
         pygame.sprite.Sprite.__init__(self)
         self.name = name
         self.team = team
@@ -26,7 +27,7 @@ class BattleObject(pygame.sprite.Sprite):
         self.animation_delay = 5
 
         # list of actions from battle_action.json (index values)
-        self.actions = ['0', '1', '2', '3', '4']
+        self.actions = actions or []
         self.stats = stats or {}
         self.dead = False
 
@@ -37,14 +38,24 @@ class BattleObject(pygame.sprite.Sprite):
     def act(self, action, target):
         if action["ACTION"]["TYPE"] == "ATTACK":
             self.animation_state = self.state_dict["attack"]
-            print("Attacking {0}!".format(target.name))
-            target.animation_state = self.state_dict["hurt"]
-            damage = action["ACTION"]["DAMAGE"]
-            target.damage(stat=action["ACTION"]["STAT"], damage=damage)
-            print("{0} took {1} damage and now hags {2}/{3} HP!".format(target.name,
-                                                                        action["ACTION"]["DAMAGE"],
-                                                                        target.stats["HP_CURRENT"],
-                                                                        target.stats["HP_MAX"]))
+            # check if hits
+            hits = Form.hit_check(accuracy=1, accuracy_stat=self.stats["DEX"], evade_stat=target.stats["DEX"], bonus=0)
+            if hits > 0:
+                target.animation_state = self.state_dict["hurt"]
+                # damage = action["ACTION"]["DAMAGE"]
+                damage = Form.normal_damage(base_damage=action["ACTION"]["DAMAGE"],
+                                            attack_stat=self.stats["STR"],
+                                            defense_stat=target.stats["DEF"],
+                                            bonus_attack=hits,
+                                            bonus_defense=0)
+                target.damage(stat=action["ACTION"]["STAT"], damage=damage)
+                print("{0} took {1} damage and now has {2}/{3} HP!".format(target.name,
+                                                                           action["ACTION"]["DAMAGE"],
+                                                                           target.stats["HP_CURRENT"],
+                                                                           target.stats["HP_MAX"]))
+            else:
+                print("WHIFF!")
+                damage = "MISS"
             return FloatingText(text=str(damage), box_position=target.sprite_rect, color=(255, 255, 255))
         else:
             print("I don't know how to {0} yet...".format(action["ACTION"]["TYPE"]))

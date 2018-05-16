@@ -6,9 +6,9 @@ from src.Actor import Actor
 
 
 class Player(Actor):
-    def __init__(self, actor_json, battle_object, portrait=None):
+    def __init__(self, actor_id, actor_json, battle_object, portrait=None):
         Actor.__init__(self, object_json=actor_json)
-
+        self.id = actor_id
         self.battle_object = battle_object
 
         if not portrait:

@@ -1,6 +1,7 @@
 import json
 from os import path
 import pygame
+from random import choice
 
 from src.box.SelectBox import SelectBox
 from src.battle.BattleObject import BattleObject
@@ -47,20 +48,21 @@ class Battle (object):
             enemy_file.close()
             for enemy in battle_info["ENEMIES"]:
                 enemy_data = enemy_list[enemy["ENTITY"]]
-                sprite_path = path.join(settings.BATTLE, enemy_data["sprite_sheet"])
+                sprite_path = path.join(settings.BATTLE, enemy_data["SPRITE_SHEET"])
                 sprite_sheet = SpriteSheet(filename=sprite_path,
-                                           pic_width=enemy_data["sprite_size"][0],
-                                           pic_height=enemy_data["sprite_size"][1])
+                                           pic_width=enemy_data["SPRITE_SIZE"][0],
+                                           pic_height=enemy_data["SPRITE_SIZE"][1])
                 sprite_rect = pygame.Rect(enemy["POSITION"][0],
                                           enemy["POSITION"][1],
-                                          enemy_data["sprite_size"][0],
-                                          enemy_data["sprite_size"][1])
+                                          enemy_data["SPRITE_SIZE"][0],
+                                          enemy_data["SPRITE_SIZE"][1])
                 # make sure to copy the stats dict otherwise all of the same type of enemy will share HP
                 self.object_list.append(BattleObject(name=enemy["NAME"],
                                                      sprite_sheet=sprite_sheet,
                                                      sprite_rect=sprite_rect,
                                                      team=enemy["TEAM"],
-                                                     stats=enemy_data["stats"].copy()))
+                                                     stats=enemy_data["STATS"].copy(),
+                                                     actions=enemy_data["ACTIONS"]))
             enemy_file.close()
 
         self.battle_box = self.build_battle_menu(left=self.screen_size[0]/2+self.screen_size[0]/4,
@@ -95,7 +97,8 @@ class Battle (object):
             self.show_action_menu()
         else:
             print("CPU {0} would go here...".format(self.current_actor.name))
-            self.end_turn()
+            action = self.battle_actions[str(choice(self.current_actor.actions))]
+            self.character_action(target=choice(self.get_targets(category=action["TARGET"])), override=action)
 
     def show_action_menu(self):
         # Turn off battle picker just to be safe
@@ -114,30 +117,38 @@ class Battle (object):
             self.battle_wheel.set_actor_time(5)
         self.start_turn()
 
-    def character_action(self, target):
+    def character_action(self, target, override=None):
         self.state = "IDLE"
         self.battle_picker.off()
-        text = self.current_actor.act(action=self.battle_box.get_action(), target=target)
+        if override:
+            action = override
+        else:
+            print("GET ACTION; {0}".format(self.battle_box.get_action()))
+            action = self.battle_box.get_action()
+        text = self.current_actor.act(action=action, target=target)
         if text:
             self.damage_numbers.append(text)
-        print("{0} did {1} to {2}".format(self.current_actor.name, self.battle_box.get_action()["NAME"], target.name))
+        print("{0} did {1} to {2}".format(self.current_actor.name, action["NAME"], target.name))
         self.battle_box.reset()
         self.end_turn()
 
-    def choose_target(self, category="ENEMY"):
-        self.battle_box.close()
-        target_list = []
+    def get_targets(self, category="ENEMY"):
+        targets = []
         for o in self.object_list:
             if category == "ENEMY" and o.team != self.current_actor.team:
-                target_list.append(o)
+                targets.append(o)
             elif category == "ALLY" and o.team == self.current_actor.team:
-                target_list.append(o)
+                targets.append(o)
             elif category == "ALL":
-                target_list.append(o)
+                targets.append(o)
             elif category == "SELF":
-                target_list.append(self.current_actor)
+                targets.append(self.current_actor)
                 break
-        self.battle_picker.target_list = target_list
+        return targets
+
+    def choose_target(self, category="ENEMY"):
+        self.battle_box.close()
+        self.battle_picker.target_list = self.get_targets(category=category)
         self.battle_picker.visible = True
         self.state = "TARGET"
 

@@ -10,3 +10,5 @@ ASS_DATA = path.join(ASSETS, "data")
 BATTLE = path.join(ASSETS, "battle")
 BACKGROUND = path.join(ASSETS, "background")
 BATTLEGROUND = path.join(ASSETS, "battleground")
+#
+SAVE = path.join("..", "data")

@@ -4,7 +4,8 @@ import pygame
 class FloatingText(object):
     def __init__(self, text, box_position, font_size=24, color=None, alpha=255):
         self.text = text
-        self.position = box_position
+        # it needs to be a little wider than most sprites, tbh
+        self.position = pygame.Rect(box_position.left, box_position.top, 200, 50)
         self.alpha = alpha
 
         self.font_size = font_size

@@ -101,10 +101,11 @@ class Camera(object):
                                          sprite_rect=pygame.Rect(0, 0, data["BATTLE"]["WIDTH"],
                                                                  data["BATTLE"]["HEIGHT"]),
                                          team=0,
-                                         stats=hero_data["STATS"] or data["BATTLE"]["BASE_STATS"])
+                                         stats=hero_data["STATS"] or data["BATTLE"]["BASE_STATS"],
+                                         actions=['0', '1', '2', '3', '4'])
             player_data = {"properties": data}
             player_data["properties"]["SPEED"] = settings.PLAYER_SPEED
-            self.team.append(Player(actor_json=player_data, battle_object=player_battle))
+            self.team.append(Player(actor_id=hero_data["DATA"], actor_json=player_data, battle_object=player_battle))
             data_file.close()
 
     def start_battle(self, battle_index):
@@ -194,10 +195,9 @@ class Camera(object):
                     self.player.teleport(x=door_cords[0], y=door_cords[1])
 
     def save_game(self):
-        save_path = path.join("..", "data", "save.json")
-        char_block = {"DATA": "BOBMAN",
-                      "STATS": self.player.battle_object.stats
-                      }
+        char_block = []
+        for hero in self.team:
+            char_block.append({"DATA": hero.id, "NAME": hero.battle_object.name, "STATS": hero.battle_object.stats})
         loc_block = {"MAP": self.map.name,
                      "POSITION": (self.player.sprite_rect.left, self.player.sprite_rect.top)
                      }
@@ -205,7 +205,7 @@ class Camera(object):
                       "LOC": loc_block,
                       "FLAGS": self.flags
                       }
-        with open(save_path, 'w') as out_file:
+        with open(path.join(settings.SAVE, "save.json"), 'w') as out_file:
             json.dump(save_block, out_file)
             out_file.close()
         self.notification = Notice(screen_size=self.screen_size, text="GAME SAVED", color=(80, 80, 150))
