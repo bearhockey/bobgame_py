@@ -82,15 +82,7 @@ class Battle (object):
     def start_turn(self):
         print("\nSTARTING BATTLE LOOP\n--------------------")
         self.current_actor = self.battle_wheel.get_next()
-        # check if enemies are all defeated
-        win = True
-        for o in self.object_list:
-            if self.current_actor.team != o.team and not o.dead:
-                win = False
-        if win:
-            print("YOU DID GOOD")
-            self.state = "END"
-        elif self.current_actor.dead:
+        if self.current_actor.dead:
             print("CHAR is dead.")
             self.end_turn()
         elif self.current_actor.team in self.player_teams:
@@ -110,8 +102,7 @@ class Battle (object):
 
     def end_turn(self):
         if self.current_actor.dead:
-            self.current_actor.die()
-            self.battle_wheel.set_actor_time(-1)
+            self.battle_wheel.set_actor_time(10)
         else:
             self.current_actor.idle()
             self.battle_wheel.set_actor_time(5)
@@ -125,21 +116,19 @@ class Battle (object):
         else:
             print("GET ACTION; {0}".format(self.battle_box.get_action()))
             action = self.battle_box.get_action()
-        text = self.current_actor.act(action=action, target=target)
-        if text:
-            self.damage_numbers.append(text)
+        self.current_actor.start_action(action=action, target=target)
         print("{0} did {1} to {2}".format(self.current_actor.name, action["NAME"], target.name))
         self.battle_box.reset()
-        self.end_turn()
+        # self.end_turn()
 
     def get_targets(self, category="ENEMY"):
         targets = []
         for o in self.object_list:
-            if category == "ENEMY" and o.team != self.current_actor.team:
+            if category == "ENEMY" and o.team != self.current_actor.team and not o.dead:
                 targets.append(o)
-            elif category == "ALLY" and o.team == self.current_actor.team:
+            elif category == "ALLY" and o.team == self.current_actor.team and not o.dead:
                 targets.append(o)
-            elif category == "ALL":
+            elif category == "ALL" and not o.dead:
                 targets.append(o)
             elif category == "SELF":
                 targets.append(self.current_actor)
@@ -157,6 +146,21 @@ class Battle (object):
         if width is None:
             width = self.screen_size[0]/2 - 8
         return SelectBox(pygame.Rect(left, top, width, height), color=color)
+
+    def update(self, screen):
+        # check for deaths
+        win = True
+        for o in self.object_list:
+            if self.current_actor.team != o.team and not o.dead:
+                win = False
+        if win:
+            print("YOU DID GOOD")
+            self.state = "END"
+        text = self.current_actor.act()
+        if text:
+            self.damage_numbers.append(text)
+            self.end_turn()
+        self.draw(screen=screen)
 
     def draw(self, screen):
         screen.blit(self.background, (0, 0))

@@ -123,7 +123,7 @@ class Camera(object):
                 self.battle = None
             else:
                 self.controller.poll_battle(self.battle)
-                self.battle.draw(screen)
+                self.battle.update(screen=screen)
         elif self.show_menu:
             self.controller.poll_main_menu(camera=self)
             # performance hit might be if you draw this map under the box

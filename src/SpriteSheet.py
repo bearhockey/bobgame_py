@@ -14,11 +14,18 @@ class SpriteSheet(object):
             raise Exception("Unable to load spritesheet image: {0}".format(filename))
 
     def draw(self, source, destination, x, y, flipped=False):
-        rect = (x * self.width, y * self.height, self.width, self.height)
+        # rect = (x * self.width, y * self.height, self.width, self.height)
+        try:
+            rect = pygame.Rect(x * self.width, y * self.height, self.width, self.height)
+        except TypeError:
+            raise Exception("{0} {1} {2} {3}".format(x, y, self.width, self.height))
         if flipped:
             source.blit(pygame.transform.flip(self.sheet, 1, 0), destination, area=rect)
         else:
-            source.blit(self.sheet, destination, area=rect)
+            try:
+                source.blit(self.sheet, destination, area=rect)
+            except TypeError:
+                raise Exception("What? {0}".format(type(rect)))
 
     def animate(self, source, destination, row, wait_time, ping_pong=True, flipped=False):
         self.draw(source, destination, self.frame, row, flipped=flipped)
