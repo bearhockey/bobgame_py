@@ -7,7 +7,10 @@ from src.Camera import Camera
 from src.Controller import Controller
 from src.Title import Title
 
-screen_size = width, height = (1280, 720)
+# screen_size = width, height = (640, 400) # SNES view
+screen_size = width, height = (800, 480) # mobile view
+# screen_size = width, height = (1280, 720)  # desktop view
+font_size = int(height/30)
 black = (0, 0, 0)
 
 
@@ -15,7 +18,7 @@ def start_game(game_data):
     char_data = game_data["CHAR"]
     map_data = game_data["LOC"]
     flags = game_data["FLAGS"]
-    cam = Camera(screen_size=screen_size, roster=char_data, flags=flags)
+    cam = Camera(screen_size=screen_size, font_size=font_size, roster=char_data, flags=flags)
     cam.load_map(map_name=map_data["MAP"], goto=map_data["POSITION"])
     return cam
 
@@ -50,7 +53,7 @@ clock = pygame.time.Clock()
 
 # needs to be set before any images are loaded
 screen = pygame.display.set_mode(screen_size)
-title_screen = Title(screen_size=screen_size)
+title_screen = Title(screen_size=screen_size, font_size=font_size)
 camera = None
 controller = Controller()
 state = "TITLE"

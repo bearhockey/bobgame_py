@@ -59,6 +59,10 @@ class Controller(object):
                 elif press[self.keys["up"]] != 0:
                     battle.battle_box.cursor_up()
                     self.delay()
+            elif battle.state == "VICTORY":
+                if press[self.keys["action"]] != 0:
+                    battle.end_battle()
+                    self.delay()
 
     def poll_menu(self, menu):
         if self.delay_timer and self.delay_timer > 0:

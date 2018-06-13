@@ -12,14 +12,15 @@ from src.Map import Map
 from src.Menu import Menu
 from src.Player import Player
 from src.SpriteSheet import SpriteSheet
-from src.TextBox import TextBox
+from src.box.TextBox import TextBox
 
 import src.settings as settings
 
 
 class Camera(object):
-    def __init__(self, screen_size, roster, flags):
+    def __init__(self, screen_size, font_size, roster, flags):
         self.screen_size = screen_size
+        self.font_size = font_size
         self.flags = flags
         self.controller = Controller()
         # build team roster
@@ -56,8 +57,12 @@ class Camera(object):
         self.in_battle = False
         self.battle = None
 
-    def build_text_box(self, left=4, top=500, height=200, color=(20, 30, 200)):
-        return TextBox(pygame.Rect(left, top, self.screen_size[0] - left * 2, height), "TEXT", color)
+    def build_text_box(self, padding=4, height=200, color=(20, 30, 200)):
+        top = self.screen_size[1]-height-padding
+        return TextBox(box_bounds=pygame.Rect(padding, top, self.screen_size[0] - padding * 2, height),
+                       text="TEXT",
+                       color=color,
+                       font_size=self.font_size)
 
     def convert_door_destination(self, cords):
         x = int(cords[0]) * self.map.tileset_data["t_width"]
@@ -82,7 +87,10 @@ class Camera(object):
         screen.blit(view, (self.cam_center[0] - self.cam_offset_x, self.cam_center[1] - self.cam_offset_y))
 
     def open_menu(self):
-        self.menu = Menu(screen_size=self.screen_size, color=(20, 30, 200), actor_list=self.team)
+        self.menu = Menu(screen_size=self.screen_size,
+                         actor_list=self.team,
+                         color=(20, 30, 200),
+                         font_size=self.font_size)
         self.show_menu = True
         self.menu.open()
 
@@ -109,7 +117,10 @@ class Camera(object):
             data_file.close()
 
     def start_battle(self, battle_index):
-        self.battle = Battle(screen_size=self.screen_size, battle_index=battle_index, team=self.team)
+        self.battle = Battle(screen_size=self.screen_size,
+                             font_size=self.font_size,
+                             battle_index=battle_index,
+                             team=self.team)
         self.in_battle = True
 
     def update(self, screen):

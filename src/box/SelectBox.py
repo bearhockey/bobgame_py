@@ -2,8 +2,8 @@ from src.box.Box import Box
 
 
 class SelectBox(Box):
-    def __init__(self, box_bounds, color=None):
-        Box.__init__(self, box_bounds, color)
+    def __init__(self, box_bounds, color=None, font_size=None):
+        Box.__init__(self, box_bounds=box_bounds, color=color, font_size=font_size)
         self.options = []
         self.position = 0
 

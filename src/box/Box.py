@@ -14,7 +14,7 @@ class Box(pygame.sprite.Sprite):
         self.underlay = pygame.Surface((box_bounds.width, box_bounds.height))
         self.box = box_bounds
         self.border = 3
-        self.space = self.border * 8
+        self.space = self.border * 4
         self.inner_box = pygame.Rect(self.border,
                                      self.border,
                                      self.box.width - self.border * 2,

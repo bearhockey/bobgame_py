@@ -4,16 +4,19 @@ import pygame
 from random import choice
 
 from src.box.SelectBox import SelectBox
+from src.box.TextBox import TextBox
+
 from src.battle.BattleObject import BattleObject
 from src.battle.BattlePicker import BattlePicker
 from src.battle.BattleWheel import BattleWheel
 from src.SpriteSheet import SpriteSheet
 
+
 import src.settings as settings
 
 
 class Battle (object):
-    def __init__(self, screen_size, battle_index, team):
+    def __init__(self, screen_size, font_size, battle_index, team):
         # grab battle info from encounter map
         with open(path.join(settings.ASS_DATA, "encounter_map.json")) as encounter_map:
             battle_info = json.load(encounter_map)[battle_index]
@@ -32,6 +35,7 @@ class Battle (object):
         self.menu_color = (20, 30, 200)
 
         self.screen_size = screen_size
+        self.font_size = font_size
         self.background = pygame.image.load(path.join(settings.BACKGROUND, battle_info["BACKGROUND"]))
         self.foreground = pygame.image.load(path.join(settings.BATTLEGROUND, battle_info["FOREGROUND"]))
         self.f_position = self.screen_size[1]/2
@@ -39,7 +43,8 @@ class Battle (object):
         # load players
         i = 0
         for player in team:
-            player.battle_object.set_position(x=battle_info["SLOTS"][i][0], y=battle_info["SLOTS"][i][1])
+            player.battle_object.set_position(x=screen_size[0]/4*3+(i*10), y=screen_size[1]/3*2+(i*50))
+            # player.battle_object.set_position(x=battle_info["SLOTS"][i][0], y=battle_info["SLOTS"][i][1])
             self.object_list.append(player.battle_object)
             i += 1
         # load enemies
@@ -68,16 +73,23 @@ class Battle (object):
         self.battle_box = self.build_battle_menu(left=self.screen_size[0]/2+self.screen_size[0]/4,
                                                  width=self.screen_size[0]/4 - 8)
         self.battle_picker = BattlePicker()
-
         self.battle_wheel = BattleWheel(actors=self.object_list,
                                         position=(120, 110),
                                         radius=100,
                                         background=self.menu_color)
+        self.victory_box = self.build_text_box()
+        self.xp_pool = 0
 
         self.current_actor = None
         self.player_teams = [0]
         self.state = "IDLE"
         self.start_turn()
+
+    def build_text_box(self, left=4, top=10, height=50, color=(20, 30, 200)):
+        return TextBox(box_bounds=pygame.Rect(left, top, self.screen_size[0] - left * 2, height),
+                       text=[],
+                       font_size=self.font_size,
+                       color=color)
 
     def start_turn(self):
         print("\nSTARTING BATTLE LOOP\n--------------------")
@@ -106,7 +118,12 @@ class Battle (object):
         else:
             self.current_actor.idle()
             self.battle_wheel.set_actor_time(5)
-        self.start_turn()
+        if self.state != "VICTORY":
+            self.start_turn()
+
+    def end_battle(self):
+        self.state = "END"
+        self.victory_box.close()
 
     def character_action(self, target, override=None):
         self.state = "IDLE"
@@ -145,21 +162,23 @@ class Battle (object):
                           color=(20, 30, 200)):
         if width is None:
             width = self.screen_size[0]/2 - 8
-        return SelectBox(pygame.Rect(left, top, width, height), color=color)
+        return SelectBox(box_bounds=pygame.Rect(left, top, width, height), color=color, font_size=self.font_size)
 
     def update(self, screen):
         # check for deaths
-        win = True
-        for o in self.object_list:
-            if self.current_actor.team != o.team and not o.dead:
-                win = False
-        if win:
-            print("YOU DID GOOD")
-            self.state = "END"
-        text = self.current_actor.act()
-        if text:
-            self.damage_numbers.append(text)
-            self.end_turn()
+        if self.state != "VICTORY" and self.state != "END":
+            win = True
+            for o in self.object_list:
+                if self.current_actor.team != o.team and not o.dead:
+                    win = False
+            if win:
+                self.victory_box.open(text=["YOU WON THIS YAY"])
+                self.state = "VICTORY"
+                self.end_turn()
+            text = self.current_actor.act()
+            if text:
+                self.damage_numbers.append(text)
+                self.end_turn()
         self.draw(screen=screen)
 
     def draw(self, screen):
@@ -177,5 +196,7 @@ class Battle (object):
 
         self.battle_picker.draw(screen)
 
-        self.battle_wheel.draw(screen)
+        # self.battle_wheel.draw(screen)
         self.battle_box.draw(screen)
+        if self.victory_box:
+            self.victory_box.draw(screen=screen)

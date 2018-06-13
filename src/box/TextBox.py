@@ -4,8 +4,8 @@ from src.box.Box import Box
 
 
 class TextBox(Box):
-    def __init__(self, box_bounds, text=None, color=None, picture=None):
-        Box.__init__(self, box_bounds, color)
+    def __init__(self, box_bounds, text=None, color=None, font_size=None, picture=None):
+        Box.__init__(self, box_bounds=box_bounds, color=color, font_size=font_size)
 
         self.text = text
         self.portrait = self.get_image(picture)
@@ -41,8 +41,9 @@ class TextBox(Box):
             for text in self.text:
                 if i < 5:
                     text_offset = self.font_size * 1.3 * i
+                    # veritcal just looks better slightly smaller
                     self.overlay.blit(self.font.render(text, True, self.white),
-                                      (portrait_offset + self.space, (self.inner_box.height - 150) / 2 + text_offset))
+                                      (portrait_offset + self.space, text_offset + self.space/2))
                 i += 1
             if self.choice:
                 self.overlay.fill(self.white, self.choice_box)

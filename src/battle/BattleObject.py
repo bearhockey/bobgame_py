@@ -100,6 +100,7 @@ class BattleObject(pygame.sprite.Sprite):
         self.stats["HP_CURRENT"] = 0
         self.dead = True
         self.animation_state = self.state_dict["DEAD"]
+        return self.stats["XP"]
 
     def draw(self, screen):
         self.sprite_sheet.animate(screen,
