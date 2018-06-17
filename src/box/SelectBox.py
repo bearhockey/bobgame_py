@@ -1,40 +1,33 @@
-from src.box.Box import Box
+import pygame
+from src.box.TextBox import TextBox
 
 
-class SelectBox(Box):
-    def __init__(self, box_bounds, color=None, font_size=None):
-        Box.__init__(self, box_bounds=box_bounds, color=color, font_size=font_size)
+class SelectBox(object):
+    def __init__(self, position, box_size, color=None, pressed_color=None, font_size=None, options=None):
+        spacing = 10
         self.options = []
-        self.position = 0
+        if options:
+            i = 0
+            for option in options:
+                self.options.append({
+                    "BOX": TextBox(box_bounds=pygame.Rect(position[0],
+                                                          position[1]+(box_size[1]+spacing)*i,
+                                                          box_size[0],
+                                                          box_size[1]),
+                                   text=[option["TEXT"]],
+                                   color=color,
+                                   pressed_color=pressed_color,
+                                   font_size=font_size,
+                                   start_open=True),
+                    "ACT": option["ACT"]
+                })
+                i += 1
 
     def draw(self, screen):
-        if self.visible:
-            self.overlay.fill(self.color)
-            if self.options:
-                for o in self.options:
-                    position = self.inner_box.top + (self.options.index(o) * self.cursor_offset)
-                    self.overlay.blit(self.font.render(o["NAME"], True, self.white),
-                                      (self.cursor_offset + self.space*2, position + self.space))
-            self.overlay.blit(self.cursor, (self.space, self.position * self.cursor_offset + self.space))
-            Box.draw(self, screen)
+        for option in self.options:
+            option["BOX"].draw(screen=screen)
 
-    def get_action(self):
-        return self.options[self.position]
-
-    def cursor_down(self):
-        if self.position < 4:
-            self.position += 1
-
-    def cursor_up(self):
-        if self.position > 0:
-            self.position -= 1
-
-    def open(self, color=None):
-        Box.open(self, color)
-
-    def close(self):
-        Box.close(self)
-
-    def reset(self):
-        self.options.clear()
-        self.position = 0
+    def click(self):
+        for option in self.options:
+            if option["BOX"].click():
+                return option["ACT"]

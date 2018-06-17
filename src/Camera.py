@@ -39,6 +39,11 @@ class Camera(object):
         self.map = None
         self.menu = None
         self.show_menu = False
+        self.menu_button = TextBox(box_bounds=pygame.Rect(5, 5, 70, 35),
+                                   text=["MENU"],
+                                   color=(100, 100, 200),
+                                   font_size=self.font_size,
+                                   start_open=True)
 
         self.notification = None
 
@@ -136,7 +141,11 @@ class Camera(object):
                 self.controller.poll_battle(self.battle)
                 self.battle.update(screen=screen)
         elif self.show_menu:
-            self.controller.poll_main_menu(camera=self)
+            response = self.controller.poll_menu(menu=self.menu.options)
+            self.menu.act(action=response, camera=self)
+            if self.menu.close_menu.click():
+                self.close_menu()
+                self.controller.delay()
             # performance hit might be if you draw this map under the box
             self.draw_map(screen=screen, draw_player=False)
             if self.menu:
@@ -182,6 +191,7 @@ class Camera(object):
             # draw things
             self.draw_map(screen=screen)
             screen.blit(self.blackness, (0, 0))
+            self.menu_button.draw(screen=screen)
             if self.text_box:
                 self.text_box.draw(screen)
 

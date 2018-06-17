@@ -1,20 +1,19 @@
-import pygame
 from src.box.SelectBox import SelectBox
 
 
 class Title(object):
     def __init__(self, screen_size, font_size):
-        title_menu_color = (20, 40, 200)
-        self.title_menu = SelectBox(box_bounds=pygame.Rect(screen_size[0]/3,
-                                                           screen_size[1]/2,
-                                                           screen_size[0]/3,
-                                                           screen_size[1]/4),
-                                    color=title_menu_color,
-                                    font_size=font_size)
-        self.title_menu.options = [{"NAME": "New Game", "ACT": "NEW"},
-                                   {"NAME": "Load Game", "ACT": "LOAD"},
-                                   {"NAME": "Exit", "ACT": "EXIT"}]
-        self.title_menu.open()
+        s_width, s_height = screen_size
+        self.options = SelectBox(position=(s_width/2-140/2, s_height/2),
+                                 box_size=(140, 35),
+                                 color=(20, 40, 200),
+                                 pressed_color=(40, 60, 220),
+                                 font_size=font_size,
+                                 options=[{"TEXT": "NEW GAME", "ACT": "NEW"},
+                                          {"TEXT": "LOAD GAME", "ACT": "LOAD"},
+                                          {"TEXT": "EXIT GAME", "ACT": "EXIT"}
+                                          ]
+                                 )
 
     def draw(self, screen):
-        self.title_menu.draw(screen=screen)
+        self.options.draw(screen=screen)

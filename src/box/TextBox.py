@@ -4,8 +4,18 @@ from src.box.Box import Box
 
 
 class TextBox(Box):
-    def __init__(self, box_bounds, text=None, color=None, font_size=None, picture=None):
-        Box.__init__(self, box_bounds=box_bounds, color=color, font_size=font_size)
+    def __init__(self, box_bounds,
+                 text=None,
+                 color=None,
+                 pressed_color=None,
+                 font_size=None,
+                 picture=None,
+                 start_open=False):
+        Box.__init__(self, box_bounds=box_bounds,
+                     color=color,
+                     pressed_color=pressed_color,
+                     font_size=font_size,
+                     start_open=start_open)
 
         self.text = text
         self.portrait = self.get_image(picture)

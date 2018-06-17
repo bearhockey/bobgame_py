@@ -67,18 +67,16 @@ while 1:
 
     screen.fill(black)
     if state == "TITLE":
-        action = controller.poll_menu(menu=title_screen.title_menu)
-        if action:
-            act = action["ACT"]
-            if act == "NEW":
-                # start new game
-                camera = new_game()
-                state = "GAME"
-            elif act == "LOAD":
-                camera = load_game()
-                state = "GAME"
-            if act == "EXIT":
-                exit(0)
+        action = controller.poll_menu(menu=title_screen.options)
+        if action == "NEW":
+            # start new game
+            camera = new_game()
+            state = "GAME"
+        elif action == "LOAD":
+            camera = load_game()
+            state = "GAME"
+        if action == "EXIT":
+            exit(0)
         title_screen.draw(screen=screen)
     elif state == "GAME":
         camera.update(screen)

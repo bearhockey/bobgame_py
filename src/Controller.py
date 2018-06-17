@@ -67,22 +67,20 @@ class Controller(object):
     def poll_menu(self, menu):
         if self.delay_timer and self.delay_timer > 0:
             self.delay_timer -= 1
-        elif pygame.key.get_focused():
-            press = pygame.key.get_pressed()
-            if press[self.keys["action"]] != 0:
-                # menu.act(action=menu.options.get_action())
+        elif pygame.mouse.get_focused():
+            response = menu.click()
+            if response:
                 self.delay()
-                return menu.get_action()
-            elif press[self.keys["down"]] != 0:
-                menu.cursor_down()
-                self.delay()
-            elif press[self.keys["up"]] != 0:
-                menu.cursor_up()
-                self.delay()
+                return response
 
     def poll_main_menu(self, camera):
         if self.delay_timer and self.delay_timer > 0:
             self.delay_timer -= 1
+        elif pygame.mouse.get_focused():
+            response = camera.menu.options.click()
+            if response:
+                # self.delay()
+                return response
         elif pygame.key.get_focused():
             press = pygame.key.get_pressed()
             if press[self.keys["cancel"]] != 0:
@@ -101,6 +99,10 @@ class Controller(object):
     def poll(self, camera, tbox, action_map):
         if self.delay_timer and self.delay_timer > 0:
             self.delay_timer -= 1
+        elif pygame.mouse.get_focused():
+            if camera.menu_button.click():
+                camera.open_menu()
+                self.delay()
         elif pygame.key.get_focused():
             press = pygame.key.get_pressed()
             # ignore everything if text box is on screen
